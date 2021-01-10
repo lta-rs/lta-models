@@ -1,3 +1,5 @@
+//! Utilities for lta-rs
+
 /// Coordinate on the map
 #[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct Coordinates {
