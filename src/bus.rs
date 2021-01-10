@@ -10,11 +10,11 @@ pub mod prelude {
 }
 
 pub mod bus_arrival {
-    use lta_utils_commons::chrono::prelude::*;
+    use chrono::prelude::*;
     use serde::{Deserialize, Serialize};
 
     use crate::bus_enums::{BusFeature, BusLoad, BusType, Operator};
-    use lta_utils_commons::de::{from_str, treat_error_as_none};
+    use crate::utils::de::{from_str, treat_error_as_none};
 
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2";
 
@@ -111,8 +111,8 @@ pub mod bus_arrival {
 
 pub mod bus_services {
     use crate::bus_enums::{BusCategory, Operator};
-    use lta_utils_commons::de::from_str;
-    use lta_utils_commons::regex::BUS_FREQ_RE;
+    use crate::utils::de::from_str;
+    use crate::utils::regex::BUS_FREQ_RE;
     use serde::{Deserialize, Deserializer, Serialize};
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BusServices";
 
@@ -218,12 +218,12 @@ pub mod bus_services {
     }
 }
 pub mod bus_routes {
-    use lta_utils_commons::chrono::prelude::*;
+    use chrono::prelude::*;
     use serde::{Deserialize, Serialize};
 
     use crate::bus_enums::Operator;
-    use lta_utils_commons::de::from_str;
-    use lta_utils_commons::serde_date::str_time_option::{de_str_time_opt_br, ser_str_time_opt};
+    use crate::utils::de::from_str;
+    use crate::utils::serde_date::str_time_option::{de_str_time_opt_br, ser_str_time_opt};
 
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BusRoutes";
 
@@ -302,7 +302,7 @@ pub mod bus_routes {
 pub mod bus_stops {
     use serde::{Deserialize, Serialize};
 
-    use lta_utils_commons::de::from_str;
+    use crate::utils::de::from_str;
 
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BusStops";
 
