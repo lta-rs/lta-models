@@ -52,7 +52,7 @@ mod tests {
         gen_test!(
             BikeParkingResp,
             Vec<BikeParking>,
-            "../../dumped_data/bike_parking.json"
+            "../dumped_data/bike_parking.json"
         );
     }
 
@@ -61,7 +61,7 @@ mod tests {
         gen_test!(
             RawBusArrivalResp,
             BusArrivalResp,
-            "../../dumped_data/bus_arrival.json"
+            "../dumped_data/bus_arrival.json"
         );
     }
 
@@ -70,7 +70,7 @@ mod tests {
         gen_test!(
             BusRouteResp,
             Vec<BusRoute>,
-            "../../dumped_data/bus_route.json"
+            "../dumped_data/bus_route.json"
         );
     }
 
@@ -79,7 +79,7 @@ mod tests {
         gen_test!(
             BusServiceResp,
             Vec<BusService>,
-            "../../dumped_data/bus_services.json"
+            "../dumped_data/bus_services.json"
         );
     }
 
@@ -88,7 +88,7 @@ mod tests {
         gen_test!(
             BusStopsResp,
             Vec<BusStop>,
-            "../../dumped_data/bus_stops.json"
+            "../dumped_data/bus_stops.json"
         );
     }
 
@@ -97,7 +97,7 @@ mod tests {
         gen_test!(
             CarparkAvailResp,
             Vec<CarPark>,
-            "../../dumped_data/carpark_avail.json"
+            "../dumped_data/carpark_avail.json"
         );
     }
 
@@ -106,7 +106,7 @@ mod tests {
         gen_test!(
             ErpRatesResp,
             Vec<ErpRate>,
-            "../../dumped_data/erp_rates.json"
+            "../dumped_data/erp_rates.json"
         );
     }
 
@@ -115,7 +115,7 @@ mod tests {
         gen_test!(
             FaultyTrafficLightResp,
             Vec<FaultyTrafficLight>,
-            "../../dumped_data/faulty_traffic_lights.json"
+            "../dumped_data/faulty_traffic_lights.json"
         );
     }
 
@@ -124,7 +124,7 @@ mod tests {
         gen_test!(
             PassengerVolRawResp,
             Vec<String>,
-            "../../dumped_data/passenger_vol_bus_stops.json"
+            "../dumped_data/passenger_vol_bus_stops.json"
         );
     }
 
@@ -133,7 +133,7 @@ mod tests {
         gen_test!(
             PassengerVolRawResp,
             Vec<String>,
-            "../../dumped_data/passenger_vol_od_bus_stops.json"
+            "../dumped_data/passenger_vol_od_bus_stops.json"
         );
     }
 
@@ -142,7 +142,7 @@ mod tests {
         gen_test!(
             PassengerVolRawResp,
             Vec<String>,
-            "../../dumped_data/passenger_vol_od_train.json"
+            "../dumped_data/passenger_vol_od_train.json"
         );
     }
 
@@ -151,7 +151,7 @@ mod tests {
         gen_test!(
             PassengerVolRawResp,
             Vec<String>,
-            "../../dumped_data/passenger_vol_train.json"
+            "../dumped_data/passenger_vol_train.json"
         );
     }
 
@@ -160,7 +160,7 @@ mod tests {
         gen_test!(
             TaxiAvailResp,
             Vec<Coordinates>,
-            "../../dumped_data/taxi_avail.json"
+            "../dumped_data/taxi_avail.json"
         );
     }
 
@@ -169,7 +169,7 @@ mod tests {
         gen_test!(
             TaxiStandsResp,
             Vec<TaxiStand>,
-            "../../dumped_data/taxi_stands.json"
+            "../dumped_data/taxi_stands.json"
         );
     }
 
@@ -178,7 +178,7 @@ mod tests {
         gen_test!(
             TrainServiceAlertResp,
             TrainServiceAlert,
-            "../../dumped_data/train_service_alert.json"
+            "../dumped_data/train_service_alert.json"
         );
     }
 
@@ -187,7 +187,7 @@ mod tests {
         gen_test!(
             EstTravelTimeResp,
             Vec<EstTravelTime>,
-            "../../dumped_data/est_travel_time.json"
+            "../dumped_data/est_travel_time.json"
         );
     }
 }
