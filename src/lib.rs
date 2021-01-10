@@ -1,4 +1,4 @@
-//! Data Structures for lta-rs
+//! Data Structures for lta-rs and for LTA datamall APIs
 
 #[macro_use]
 extern crate lazy_static;
