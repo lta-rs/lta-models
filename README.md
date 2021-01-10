@@ -1,8 +1,5 @@
-
-<p align="center">
-  # `lta-models`
-</p>
-<p align="center">
+# `lta-models`
+<p align="left">
   <a href="https://github.com/lta-rs/lta-models/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/lta-rs/lta-models"/>
   </a>
