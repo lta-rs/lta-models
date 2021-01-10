@@ -175,7 +175,7 @@ pub mod de {
     use std::marker::PhantomData as Phantom;
     use std::str::FromStr;
 
-    use crate::{regex::*, Coordinates, Location};
+    use crate::utils::{regex::*, Coordinates, Location};
     use serde::de::{self, Visitor};
     use serde::export::Formatter;
     use serde::{Deserialize, Deserializer};
