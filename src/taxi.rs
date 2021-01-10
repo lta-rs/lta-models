@@ -6,12 +6,12 @@ pub mod prelude {
             taxi_avail::TaxiAvailResp,
             taxi_stands::{TaxiStand, TaxiStandsResp},
         },
-        lta_utils_commons::Coordinates,
+        crate::utils::Coordinates,
     };
 }
 
 pub mod taxi_avail {
-    use lta_utils_commons::Coordinates;
+    use crate::utils::Coordinates;
     use serde::{Deserialize, Serialize};
 
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/Taxi-Availability";
@@ -47,7 +47,7 @@ pub mod taxi_avail {
 }
 
 pub mod taxi_stands {
-    use lta_utils_commons::de::from_str_to_bool;
+    use crate::utils::de::from_str_to_bool;
     use serde::{Deserialize, Serialize};
 
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/TaxiStands";
