@@ -26,8 +26,8 @@ pub mod erp_rates {
     use std::fmt::Formatter;
     use std::str::FromStr;
 
-    use lta_utils_commons::{
-        chrono::{NaiveDate, NaiveTime},
+    use chrono::{NaiveDate, NaiveTime};
+    use crate::utils::{
         de::{delimited, Sep},
         serde_date::{
             str_date,
@@ -185,8 +185,8 @@ pub mod erp_rates {
 pub mod carpark_avail {
     use serde::{Deserialize, Serialize};
 
-    use lta_utils_commons::de::from_str_to_coords;
-    use lta_utils_commons::Coordinates;
+    use crate::utils::de::from_str_to_coords;
+    use crate::utils::Coordinates;
 
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/CarParkAvailabilityv2";
 
@@ -308,10 +308,10 @@ pub mod est_travel_time {
 }
 
 pub mod faulty_traffic_lights {
-    use lta_utils_commons::chrono::prelude::*;
+    use chrono::prelude::*;
     use serde::{Deserialize, Serialize};
 
-    use lta_utils_commons::serde_date::ymd_hms_option;
+    use crate::utils::serde_date::ymd_hms_option;
 
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/FaultyTrafficLights";
 
@@ -357,10 +357,10 @@ pub mod faulty_traffic_lights {
 }
 
 pub mod road {
-    use lta_utils_commons::chrono::prelude::*;
+    use chrono::prelude::*;
     use serde::{Deserialize, Serialize};
 
-    use lta_utils_commons::serde_date::str_date;
+    use crate::utils::serde_date::str_date;
 
     pub const URL_ROAD_OPENING: &str =
         "http://datamall2.mytransport.sg/ltaodataservice/RoadOpenings";
@@ -409,7 +409,7 @@ pub mod road {
 pub mod traffic_images {
     use serde::{Deserialize, Serialize};
 
-    use lta_utils_commons::de::from_str;
+    use crate::utils::de::from_str;
 
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/Traffic-Images";
 
@@ -509,8 +509,8 @@ pub mod traffic_incidents {
 pub mod traffic_speed_bands {
     use serde::{Deserialize, Serialize};
 
-    use lta_utils_commons::de::{from_str, from_str_loc_to_loc};
-    use lta_utils_commons::Location;
+    use crate::utils::de::{from_str, from_str_loc_to_loc};
+    use crate::utils::Location;
 
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/TrafficSpeedBandsv2";
 
@@ -610,7 +610,7 @@ pub mod vms_emas {
 pub mod bike_parking {
     use serde::{Deserialize, Serialize};
 
-    use lta_utils_commons::de::from_str_to_bool;
+    use crate::utils::de::from_str_to_bool;
 
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BicycleParkingv2";
 
