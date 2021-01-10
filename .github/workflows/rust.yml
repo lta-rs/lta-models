@@ -14,7 +14,7 @@ jobs:
         rust-version: ${{ matrix.rust }}
     - uses: actions/checkout@master
     - name: Run tests
-      run: cargo test --verbose
+      run: cargo check --verbose
   test:
     runs-on: ${{ matrix.os }}
     strategy:
