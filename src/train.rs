@@ -11,7 +11,7 @@ pub mod train_service_alert {
     use serde::{Deserialize, Serialize};
     use serde_repr::*;
 
-    use lta_utils_commons::de::{delimited, Sep, WrapErr};
+    use crate::utils::de::{delimited, Sep, WrapErr};
     use std::ops::Deref;
     use std::str::FromStr;
 
