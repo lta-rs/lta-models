@@ -111,7 +111,7 @@ pub mod bus_arrival {
 
 pub mod bus_services {
     use crate::bus_enums::{BusCategory, Operator};
-    use crate::utils::de::from_str;
+    use crate::utils::de::from_str_error_as_none;
     use crate::utils::regex::BUS_FREQ_RE;
     use serde::{Deserialize, Deserializer, Serialize};
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BusServices";
@@ -164,11 +164,11 @@ pub mod bus_services {
 
         pub category: BusCategory,
 
-        #[serde(deserialize_with = "from_str")]
-        pub origin_code: u32,
+        #[serde(deserialize_with = "from_str_error_as_none")]
+        pub origin_code: Option<u32>,
 
-        #[serde(deserialize_with = "from_str", alias = "DestinationCode")]
-        pub dest_code: u32,
+        #[serde(deserialize_with = "from_str_error_as_none", alias = "DestinationCode")]
+        pub dest_code: Option<u32>,
 
         #[serde(alias = "AM_Peak_Freq", deserialize_with = "from_str_to_bus_freq")]
         pub am_peak_freq: BusFreq,

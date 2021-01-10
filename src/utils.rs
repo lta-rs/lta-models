@@ -270,6 +270,17 @@ pub mod de {
         T::from_str(&s).map_err(de::Error::custom)
     }
 
+    pub fn from_str_error_as_none<'de, T, D>(deserializer: D) -> Result<Option<T>, D::Error>
+        where
+            T: FromStr,
+            T::Err: Display,
+            D: Deserializer<'de>,
+    {
+        let s = String::deserialize(deserializer)?;
+        Ok(T::from_str(&s).ok())
+    }
+
+
     pub fn delimited<'de, V, T, D>(deserializer: D) -> Result<V, D::Error>
         where
             V: FromIterator<T>,
