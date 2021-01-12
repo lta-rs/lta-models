@@ -179,7 +179,7 @@ pub mod de {
 
     use crate::utils::{regex::*, Coordinates, Location};
     use serde::de::{self, Visitor};
-    use serde::export::Formatter;
+    use std::fmt::Formatter;
     use serde::{Deserialize, Deserializer};
     use serde_json::Value;
 
