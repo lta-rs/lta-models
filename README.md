@@ -19,6 +19,7 @@
 
 
 This repository contains the data structures required to interact with LTA's datamall APIs.
+Crate caan be use to build a client with different backend.
 
 ##  License
 lta-models is licensed under MIT license (LICENSE-MIT or http://opensource.org/licenses/MIT)
