@@ -26,7 +26,6 @@ pub mod erp_rates {
     use std::fmt::Formatter;
     use std::str::FromStr;
 
-    use chrono::{NaiveDate, NaiveTime};
     use crate::utils::{
         de::{delimited, Sep},
         serde_date::{
@@ -34,6 +33,7 @@ pub mod erp_rates {
             str_time_option::{de_str_time_opt_erp, ser_str_time_opt},
         },
     };
+    use chrono::{NaiveDate, NaiveTime};
 
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/ERPRates";
 

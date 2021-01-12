@@ -12,6 +12,7 @@ pub mod taxi;
 pub mod traffic;
 pub mod train;
 pub mod utils;
+pub use chrono;
 
 /// Data structures for all data
 pub mod prelude {
@@ -67,11 +68,7 @@ mod tests {
 
     #[test]
     fn bus_routes() {
-        gen_test!(
-            BusRouteResp,
-            Vec<BusRoute>,
-            "../dumped_data/bus_route.json"
-        );
+        gen_test!(BusRouteResp, Vec<BusRoute>, "../dumped_data/bus_route.json");
     }
 
     #[test]
@@ -85,11 +82,7 @@ mod tests {
 
     #[test]
     fn bus_stops() {
-        gen_test!(
-            BusStopsResp,
-            Vec<BusStop>,
-            "../dumped_data/bus_stops.json"
-        );
+        gen_test!(BusStopsResp, Vec<BusStop>, "../dumped_data/bus_stops.json");
     }
 
     #[test]
@@ -103,11 +96,7 @@ mod tests {
 
     #[test]
     fn erp_rates() {
-        gen_test!(
-            ErpRatesResp,
-            Vec<ErpRate>,
-            "../dumped_data/erp_rates.json"
-        );
+        gen_test!(ErpRatesResp, Vec<ErpRate>, "../dumped_data/erp_rates.json");
     }
 
     #[test]

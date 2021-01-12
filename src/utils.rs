@@ -59,8 +59,8 @@ pub mod serde_date {
         const FORMAT: &str = "%Y-%m-%d %H:%M:%S";
 
         pub fn serialize<S>(date: &Option<DateTime<Utc>>, serializer: S) -> Result<S::Ok, S::Error>
-            where
-                S: Serializer,
+        where
+            S: Serializer,
         {
             match date {
                 Some(time) => {
@@ -72,8 +72,8 @@ pub mod serde_date {
         }
 
         pub fn deserialize<'de, D>(deserializer: D) -> Result<Option<DateTime<Utc>>, D::Error>
-            where
-                D: Deserializer<'de>,
+        where
+            D: Deserializer<'de>,
         {
             let s = String::deserialize(deserializer)?;
             Utc.datetime_from_str(&s, FORMAT)
@@ -90,8 +90,8 @@ pub mod serde_date {
             opt_time: &Option<NaiveTime>,
             serializer: S,
         ) -> Result<S::Ok, S::Error>
-            where
-                S: Serializer,
+        where
+            S: Serializer,
         {
             match opt_time {
                 Some(time) => {
@@ -109,8 +109,8 @@ pub mod serde_date {
         }
 
         pub fn de_str_time_opt_erp<'de, D>(deserializer: D) -> Result<Option<NaiveTime>, D::Error>
-            where
-                D: Deserializer<'de>,
+        where
+            D: Deserializer<'de>,
         {
             let s = String::deserialize(deserializer)?;
             if s.eq("-") {
@@ -127,8 +127,8 @@ pub mod serde_date {
         }
 
         pub fn de_str_time_opt_br<'de, D>(deserializer: D) -> Result<Option<NaiveTime>, D::Error>
-            where
-                D: Deserializer<'de>,
+        where
+            D: Deserializer<'de>,
         {
             let s = String::deserialize(deserializer)?;
             if s.eq("-") {
@@ -152,16 +152,16 @@ pub mod serde_date {
         const FORMAT: &str = "%Y-%m-%d";
 
         pub fn serialize<S>(date: &NaiveDate, serializer: S) -> Result<S::Ok, S::Error>
-            where
-                S: Serializer,
+        where
+            S: Serializer,
         {
             let s = format!("{}", date.format(FORMAT));
             serializer.serialize_str(&s)
         }
 
         pub fn deserialize<'de, D>(deserializer: D) -> Result<NaiveDate, D::Error>
-            where
-                D: Deserializer<'de>,
+        where
+            D: Deserializer<'de>,
         {
             let s = String::deserialize(deserializer)?;
             NaiveDate::parse_from_str(&s, FORMAT).map_err(serde::de::Error::custom)
@@ -199,9 +199,9 @@ pub mod de {
 
     /// If error, return None
     pub fn treat_error_as_none<'de, T, D>(deserializer: D) -> Result<Option<T>, D::Error>
-        where
-            T: Deserialize<'de>,
-            D: Deserializer<'de>,
+    where
+        T: Deserialize<'de>,
+        D: Deserializer<'de>,
     {
         let value: Value = Deserialize::deserialize(deserializer)?;
         Ok(T::deserialize(value).ok())
@@ -209,8 +209,8 @@ pub mod de {
 
     /// Simple conversion of Y and N to boolean
     pub fn from_str_to_bool<'de, D>(deserializer: D) -> Result<bool, D::Error>
-        where
-            D: Deserializer<'de>,
+    where
+        D: Deserializer<'de>,
     {
         let s = String::deserialize(deserializer)?;
 
@@ -225,8 +225,8 @@ pub mod de {
     /// in a string and you would like to convert them to a Coordinates
     /// structure.
     pub fn from_str_to_coords<'de, D>(deserializer: D) -> Result<Option<Coordinates>, D::Error>
-        where
-            D: Deserializer<'de>,
+    where
+        D: Deserializer<'de>,
     {
         let s = String::deserialize(deserializer)?;
 
@@ -242,8 +242,8 @@ pub mod de {
     }
 
     pub fn from_str_loc_to_loc<'de, D>(deserializer: D) -> Result<Option<Location>, D::Error>
-        where
-            D: Deserializer<'de>,
+    where
+        D: Deserializer<'de>,
     {
         let s = String::deserialize(deserializer)?;
 
@@ -263,40 +263,39 @@ pub mod de {
     }
 
     pub fn from_str<'de, T, D>(deserializer: D) -> Result<T, D::Error>
-        where
-            T: FromStr,
-            T::Err: Display,
-            D: Deserializer<'de>,
+    where
+        T: FromStr,
+        T::Err: Display,
+        D: Deserializer<'de>,
     {
         let s = String::deserialize(deserializer)?;
         T::from_str(&s).map_err(de::Error::custom)
     }
 
     pub fn from_str_error_as_none<'de, T, D>(deserializer: D) -> Result<Option<T>, D::Error>
-        where
-            T: FromStr,
-            T::Err: Display,
-            D: Deserializer<'de>,
+    where
+        T: FromStr,
+        T::Err: Display,
+        D: Deserializer<'de>,
     {
         let s = String::deserialize(deserializer)?;
         Ok(T::from_str(&s).ok())
     }
 
-
     pub fn delimited<'de, V, T, D>(deserializer: D) -> Result<V, D::Error>
-        where
-            V: FromIterator<T>,
-            T: FromStr + Sep,
-            T::Err: Display,
-            D: Deserializer<'de>,
+    where
+        V: FromIterator<T>,
+        T: FromStr + Sep,
+        T::Err: Display,
+        D: Deserializer<'de>,
     {
         struct DelimitedBy<V, T>(Phantom<V>, Phantom<T>);
 
         impl<'de, V, T> Visitor<'de> for DelimitedBy<V, T>
-            where
-                V: FromIterator<T>,
-                T: FromStr + Sep,
-                T::Err: Display,
+        where
+            V: FromIterator<T>,
+            T: FromStr + Sep,
+            T::Err: Display,
         {
             type Value = V;
 
@@ -305,8 +304,8 @@ pub mod de {
             }
 
             fn visit_str<E>(self, s: &str) -> Result<Self::Value, E>
-                where
-                    E: de::Error,
+            where
+                E: de::Error,
             {
                 let iter = s.split(T::delimiter()).map(FromStr::from_str);
                 Result::from_iter(iter).map_err(de::Error::custom)
