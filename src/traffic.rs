@@ -13,6 +13,7 @@ pub mod prelude {
         },
         crate::traffic::road::{RoadDetails, RoadDetailsResp, RoadDetailsType},
         crate::traffic::traffic_images::{TrafficImage, TrafficImageResp},
+        crate::traffic::traffic_incidents::{TrafficIncident, TrafficIncidentResp, IncidentType},
         crate::traffic::traffic_speed_bands::{
             RoadCategory, TrafficSpeedBand, TrafficSpeedBandResp,
         },
