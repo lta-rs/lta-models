@@ -12,6 +12,8 @@ pub mod taxi;
 pub mod traffic;
 pub mod train;
 pub mod utils;
+pub mod geo;
+pub mod facility;
 pub use chrono;
 
 /// Data structures for all data
