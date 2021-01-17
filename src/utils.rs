@@ -179,9 +179,9 @@ pub mod de {
 
     use crate::utils::{regex::*, Coordinates, Location};
     use serde::de::{self, Visitor};
-    use std::fmt::Formatter;
     use serde::{Deserialize, Deserializer};
     use serde_json::Value;
+    use std::fmt::Formatter;
 
     /// Error for wrapped data
     pub struct WrapErr;
