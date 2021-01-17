@@ -101,6 +101,8 @@ pub mod erp_rates {
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub enum ZoneId {
+        CT2,
+        PE4,
         AY1,
         AYC,
         AYT,
