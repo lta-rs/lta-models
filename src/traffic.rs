@@ -132,6 +132,8 @@ pub mod erp_rates {
         SR1,
         KAL,
         EC3,
+        MC1,
+        MC2,
 
         #[serde(other)]
         Unknown,
