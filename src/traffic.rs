@@ -416,7 +416,7 @@ pub mod traffic_images {
 
     use crate::utils::de::from_str;
 
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/Traffic-Images";
+    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/Traffic-Imagesv2";
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct TrafficImage {
