@@ -3,7 +3,6 @@ pub mod prelude {
 }
 
 pub mod facilities_maintenance {
-    use chrono::{DateTime, FixedOffset};
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct FacilityMaintenanceRawResp {
@@ -14,12 +13,11 @@ pub mod facilities_maintenance {
     #[serde(rename_all(deserialize = "PascalCase"))]
     pub struct FacilityLink {
         pub link: String,
-        pub timestamp: DateTime<FixedOffset>,
     }
 
-    impl Into<Vec<FacilityLink>> for FacilityMaintenanceRawResp {
-        fn into(self) -> Vec<FacilityLink> {
-            self.value.into_iter().map(|v| v).collect()
+    impl Into<Vec<String>> for FacilityMaintenanceRawResp {
+        fn into(self) -> Vec<String> {
+            self.value.into_iter().map(|v| v.link).collect()
         }
     }
 }
