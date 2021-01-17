@@ -1,0 +1,8 @@
+ {
+   "odata.metadata": "http://datamall2.mytransport.sg/ltaodataservice/$metadata#GeospatialWholeIsland",
+   "value": [
+     {
+       "Link": "https://dmgeospatial.s3.ap-southeast-1.amazonaws.com/ArrowMarking.zip?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEG8aDmFwLXNvdXRoZWFzdC0xIkgwRgIhAKxxpgWaGPqBCNaaT0o0XeT%2BlzMYjloFm2W0YpzmnmpIAiEA4RnKtwynxp7lUOMCvYnKfLAuUP9fXl7leSBgcs2SnaYqowMISBACGgwzNDA2NDUzODEzMDQiDCh12Feh0dO4jd3Q1SqAA7NxQ9nUHrLtyE2bV7QfE71dQpBcsjE3JLgD2idXIttZGNaoN9jm3Amb0VL8AL%2FS%2F7CmFj5usa2RI0ic8bhYwgc9TaV8h3OEV7t%2FV3QrG5NT08Cst8tiOH13R4bBf8ETgzBkzDYjsZD3MsXY8DEVdCpcdCS03S%2BNuXJA7lpGrhzbHWEh5Hi1Rikua2vkPfubMPHdHHq0eA0OUTvrCPlm8X18Eyjut479Sp%2FAHvG3S2UaYpjVGbbJTEXq705uR%2F60rgW1EB51rU%2FRCV3kxHw77FcLd%2B5uy7Bte2hWoluB0TfOt7GEMxfrvqMg2wyyIcbaCbZvFfprRy0H7IZdQhIGVtzsQLrXulUwNTzLXHpe2qnhndZHp6fWavMf%2FOg3st9A27QqOxlgUk7BgbmZgTvAW9XQ0vwXckKQ44PIx3vGEJVPGJ4jNvMaPoxKVyKR04fGZf4pOgsGXKs00cp8nq9rlCmaQUILKIgOug8%2FNDu211s8S4%2F1xiweyNZtA9W3uNkhrjDwmpGABjrqAUPcM0Y5bkSCrZHd1HT%2FYIcLKnhf%2Bq%2BCCu0%2Bl2fJZvFYu0v4klCDgbGGtsRncQ25C%2Ft8Z2Tfv1eOBc%2FNRQOKX7Ex65s1liwu2tbtALsc%2Fl40qcEcZpwU0hKKS%2Be%2Bvt6idf1MR2taWcWRLbFZ8uqVH%2FYt6pHgpLu2fU0KUWySCcj7Ooq%2BoUt0sOztSKyLtemKnHsHku9Q1S4uL5JHxyJApW3Q%2BSsa8g7liIC4PHilbIGO1IzjSevlotUt7yZw%2FbSapJlyxzuo%2F43CwNHAvRVUnn6%2BCjnNhfnT6NDFne7QzrE1VV6heDrhVQ6pTg%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210117T145749Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAU6UAMAS4MFAOMYFU%2F20210117%2Fap-southeast-1%2Fs3%2Faws4_request&X-Amz-Signature=5188ff5ba912d0509fdb7cfc7651dcd52243ee5a61857bbfa4c57c73fa5bd2eb"
+     }
+   ]
+ }
