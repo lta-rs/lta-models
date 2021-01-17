@@ -3,8 +3,6 @@ pub mod prelude {
 }
 
 pub mod geospatial_whole_island {
-    use chrono::{DateTime, FixedOffset};
-
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct GeospatialWholeIslandRawResp {
         pub value: Vec<GeospatialLink>,
@@ -57,5 +55,11 @@ pub mod geospatial_whole_island {
         #[serde(alias = "VehicularBridge_Flyover_Underpass")]
         VehicularBridgeOrFlyoverOrUnderpass,
         WordMarking,
+    }
+
+    impl Into<Vec<String>> for GeospatialWholeIslandRawResp {
+        fn into(self) -> Vec<String> {
+            self.value.into_iter().map(|v| v.link).collect()
+        }
     }
 }

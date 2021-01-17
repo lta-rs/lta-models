@@ -1,5 +1,3 @@
-use chrono::{DateTime, FixedOffset};
-
 pub mod prelude {
     pub use crate::facility::facilities_maintenance::*;
 }
@@ -17,5 +15,11 @@ pub mod facilities_maintenance {
     pub struct FacilityLink {
         pub link: String,
         pub timestamp: DateTime<FixedOffset>,
+    }
+
+    impl Into<Vec<FacilityLink>> for FacilityMaintenanceRawResp {
+        fn into(self) -> Vec<FacilityLink> {
+            self.value.into_iter().map(|v| v).collect()
+        }
     }
 }
