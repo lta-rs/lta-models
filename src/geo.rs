@@ -1,6 +1,5 @@
-
 pub mod prelude {
-
+    pub use crate::geo::geospatial_whole_island::*;
 }
 
 pub mod geospatial_whole_island {
@@ -14,7 +13,7 @@ pub mod geospatial_whole_island {
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     #[serde(rename_all(deserialize = "PascalCase"))]
     pub struct GeospatialLink {
-        pub link: String
+        pub link: String,
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
