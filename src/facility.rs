@@ -1,3 +1,5 @@
+//! Facility structs and data structures
+
 pub mod prelude {
     pub use crate::facility::facilities_maintenance::*;
 }

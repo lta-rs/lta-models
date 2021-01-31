@@ -11,12 +11,11 @@
   </a>
   <a href="https://github.com/lta-rs/lta-models/actions">
     <img src="https://img.shields.io/github/workflow/status/lta-rs/lta-models/Test%20Rust%20project/main"/>
-  </a>  
+  </a>
   <a href="https://crates.io/crates/lta_models">
     <img src="https://img.shields.io/crates/v/lta-models"/>
   </a>
 </p>
-
 
 This repository contains the data structures required to interact with LTA's datamall APIs.
 

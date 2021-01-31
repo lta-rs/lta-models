@@ -1,3 +1,5 @@
+//! Geospatial structs and data structures
+
 pub mod prelude {
     pub use crate::geo::geospatial_whole_island::*;
 }
