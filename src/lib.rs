@@ -26,7 +26,10 @@ pub mod prelude {
 
 #[cfg(test)]
 mod tests {
+    use crate::bus::bus_arrival::{NextBus, ArrivalBusService};
+    use crate::bus_enums::{BusFeature, BusType};
     use crate::prelude::*;
+    use chrono::{DateTime, FixedOffset};
     use serde::{Deserialize, Serialize};
     use std::fmt::Debug;
 
@@ -180,5 +183,11 @@ mod tests {
             Vec<EstTravelTime>,
             "../dumped_data/est_travel_time.json"
         );
+    }
+
+    #[test]
+    fn struct_sz() {
+        let sz = std::mem::size_of::<ArrivalBusService>();
+        println!("{}", sz);
     }
 }
