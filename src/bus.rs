@@ -45,12 +45,12 @@ pub mod bus_arrival {
         pub next_bus: [Option<NextBus>; 3],
     }
 
-    impl Into<ArrivalBusService> for RawArrivalBusService {
-        fn into(self) -> ArrivalBusService {
-            ArrivalBusService {
-                service_no: self.service_no,
-                operator: self.operator,
-                next_bus: [self.next_bus, self.next_bus_2, self.next_bus_3],
+    impl From<RawArrivalBusService> for ArrivalBusService {
+        fn from(data: RawArrivalBusService) -> Self {
+            Self {
+                service_no: data.service_no,
+                operator: data.operator,
+                next_bus: [data.next_bus, data.next_bus_2, data.next_bus_3]
             }
         }
     }
@@ -99,11 +99,11 @@ pub mod bus_arrival {
         pub services: Vec<ArrivalBusService>,
     }
 
-    impl Into<BusArrivalResp> for RawBusArrivalResp {
-        fn into(self) -> BusArrivalResp {
-            BusArrivalResp {
-                bus_stop_code: self.bus_stop_code,
-                services: self.services.into_iter().map(|f| f.into()).collect(),
+    impl From<RawBusArrivalResp> for BusArrivalResp {
+        fn from(data: RawBusArrivalResp) -> Self {
+            Self {
+                bus_stop_code: data.bus_stop_code,
+                services: data.services.into_iter().map(|v| v.into()).collect()
             }
         }
     }
@@ -211,9 +211,9 @@ pub mod bus_services {
         pub value: Vec<BusService>,
     }
 
-    impl Into<Vec<BusService>> for BusServiceResp {
-        fn into(self) -> Vec<BusService> {
-            self.value
+    impl From<BusServiceResp> for Vec<BusService> {
+        fn from(data: BusServiceResp) -> Self {
+            data.value
         }
     }
 }
@@ -293,9 +293,9 @@ pub mod bus_routes {
         pub value: Vec<BusRoute>,
     }
 
-    impl Into<Vec<BusRoute>> for BusRouteResp {
-        fn into(self) -> Vec<BusRoute> {
-            self.value
+    impl From<BusRouteResp> for Vec<BusRoute> {
+        fn from(data: BusRouteResp) -> Self {
+            data.value
         }
     }
 }
@@ -329,9 +329,9 @@ pub mod bus_stops {
         pub value: Vec<BusStop>,
     }
 
-    impl Into<Vec<BusStop>> for BusStopsResp {
-        fn into(self) -> Vec<BusStop> {
-            self.value
+    impl From<BusStopsResp> for Vec<BusStop> {
+        fn from(data: BusStopsResp) -> Self {
+            data.value
         }
     }
 }

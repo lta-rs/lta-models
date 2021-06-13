@@ -46,9 +46,9 @@ pub mod passenger_vol {
         pub link: String,
     }
 
-    impl Into<String> for Link {
-        fn into(self) -> String {
-            self.link
+    impl From<Link> for String {
+        fn from(data: Link) -> Self {
+            data.link
         }
     }
 
@@ -57,9 +57,9 @@ pub mod passenger_vol {
         pub value: Vec<Link>,
     }
 
-    impl Into<Vec<String>> for PassengerVolRawResp {
-        fn into(self) -> Vec<String> {
-            self.value.into_iter().map(|f| f.link).collect()
+    impl From<PassengerVolRawResp> for Vec<String> {
+        fn from(data: PassengerVolRawResp) -> Self {
+            data.value.into_iter().map(|f| f.link).collect()
         }
     }
 }

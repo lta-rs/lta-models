@@ -353,9 +353,9 @@ pub mod train_service_alert {
         pub value: TrainServiceAlert,
     }
 
-    impl Into<TrainServiceAlert> for TrainServiceAlertResp {
-        fn into(self) -> TrainServiceAlert {
-            self.value
+    impl From<TrainServiceAlertResp> for TrainServiceAlert {
+        fn from(data: TrainServiceAlertResp) -> Self {
+            data.value
         }
     }
 }

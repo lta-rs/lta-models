@@ -17,9 +17,9 @@ pub mod facilities_maintenance {
         pub link: String,
     }
 
-    impl Into<Vec<String>> for FacilityMaintenanceRawResp {
-        fn into(self) -> Vec<String> {
-            self.value.into_iter().map(|v| v.link).collect()
+    impl From<FacilityMaintenanceRawResp> for Vec<String> {
+        fn from(data: FacilityMaintenanceRawResp) -> Self {
+            data.value.into_iter().map(|v| v.link).collect()
         }
     }
 }

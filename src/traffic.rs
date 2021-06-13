@@ -99,6 +99,7 @@ pub mod erp_rates {
         Saturday,
     }
 
+    #[allow(clippy::upper_case_acronyms)]
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub enum ZoneId {
         CT2,
@@ -180,9 +181,9 @@ pub mod erp_rates {
         pub value: Vec<ErpRate>,
     }
 
-    impl Into<Vec<ErpRate>> for ErpRatesResp {
-        fn into(self) -> Vec<ErpRate> {
-            self.value
+    impl From<ErpRatesResp> for Vec<ErpRate> {
+        fn from(data: ErpRatesResp) -> Self {
+            data.value
         }
     }
 }
@@ -242,9 +243,9 @@ pub mod carpark_avail {
         pub value: Vec<CarPark>,
     }
 
-    impl Into<Vec<CarPark>> for CarparkAvailResp {
-        fn into(self) -> Vec<CarPark> {
-            self.value
+    impl From<CarparkAvailResp> for Vec<CarPark> {
+        fn from(data: CarparkAvailResp) -> Self {
+            data.value
         }
     }
 }
@@ -307,9 +308,9 @@ pub mod est_travel_time {
         pub value: Vec<EstTravelTime>,
     }
 
-    impl Into<Vec<EstTravelTime>> for EstTravelTimeResp {
-        fn into(self) -> Vec<EstTravelTime> {
-            self.value
+    impl From<EstTravelTimeResp> for Vec<EstTravelTime> {
+        fn from(data: EstTravelTimeResp) -> Self {
+            data.value
         }
     }
 }
@@ -356,9 +357,9 @@ pub mod faulty_traffic_lights {
         pub value: Vec<FaultyTrafficLight>,
     }
 
-    impl Into<Vec<FaultyTrafficLight>> for FaultyTrafficLightResp {
-        fn into(self) -> Vec<FaultyTrafficLight> {
-            self.value
+    impl From<FaultyTrafficLightResp> for Vec<FaultyTrafficLight> {
+        fn from(data: FaultyTrafficLightResp) -> Self {
+            data.value
         }
     }
 }
@@ -406,9 +407,9 @@ pub mod road {
         pub value: Vec<RoadDetails>,
     }
 
-    impl Into<Vec<RoadDetails>> for RoadDetailsResp {
-        fn into(self) -> Vec<RoadDetails> {
-            self.value
+    impl From<RoadDetailsResp> for Vec<RoadDetails> {
+        fn from(data: RoadDetailsResp) -> Self {
+            data.value
         }
     }
 }
@@ -440,9 +441,9 @@ pub mod traffic_images {
         pub value: Vec<TrafficImage>,
     }
 
-    impl Into<Vec<TrafficImage>> for TrafficImageResp {
-        fn into(self) -> Vec<TrafficImage> {
-            self.value
+    impl From<TrafficImageResp> for Vec<TrafficImage> {
+        fn from(data: TrafficImageResp) -> Self {
+            data.value
         }
     }
 }
@@ -506,9 +507,9 @@ pub mod traffic_incidents {
         pub value: Vec<TrafficIncident>,
     }
 
-    impl Into<Vec<TrafficIncident>> for TrafficIncidentResp {
-        fn into(self) -> Vec<TrafficIncident> {
-            self.value
+    impl From<TrafficIncidentResp> for Vec<TrafficIncident> {
+        fn from(data: TrafficIncidentResp) -> Self {
+            data.value
         }
     }
 }
@@ -575,9 +576,9 @@ pub mod traffic_speed_bands {
         pub value: Vec<TrafficSpeedBand>,
     }
 
-    impl Into<Vec<TrafficSpeedBand>> for TrafficSpeedBandResp {
-        fn into(self) -> Vec<TrafficSpeedBand> {
-            self.value
+    impl From<TrafficSpeedBandResp> for Vec<TrafficSpeedBand> {
+        fn from(data: TrafficSpeedBandResp) -> Self {
+            data.value
         }
     }
 }
@@ -607,9 +608,9 @@ pub mod vms_emas {
         pub value: Vec<VMS>,
     }
 
-    impl Into<Vec<VMS>> for VMSResp {
-        fn into(self) -> Vec<VMS> {
-            self.value
+    impl From<VMSResp> for Vec<VMS> {
+        fn from(data: VMSResp) -> Self {
+            data.value
         }
     }
 }
@@ -691,9 +692,9 @@ pub mod bike_parking {
         pub value: Vec<BikeParking>,
     }
 
-    impl Into<Vec<BikeParking>> for BikeParkingResp {
-        fn into(self) -> Vec<BikeParking> {
-            self.value
+    impl From<BikeParkingResp> for Vec<BikeParking> {
+        fn from(data: BikeParkingResp) -> Self {
+            data.value
         }
     }
 }

@@ -59,9 +59,9 @@ pub mod geospatial_whole_island {
         WordMarking,
     }
 
-    impl Into<Vec<String>> for GeospatialWholeIslandRawResp {
-        fn into(self) -> Vec<String> {
-            self.value.into_iter().map(|v| v.link).collect()
+    impl From<GeospatialWholeIslandRawResp> for Vec<String> {
+        fn from(data: GeospatialWholeIslandRawResp) -> Self {
+            data.value.into_iter().map(|v| v.link).collect()
         }
     }
 }

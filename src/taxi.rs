@@ -30,17 +30,17 @@ pub mod taxi_avail {
         pub value: Vec<InternalCoordinates>,
     }
 
-    impl Into<Vec<Coordinates>> for TaxiAvailResp {
-        fn into(self) -> Vec<Coordinates> {
-            self.value.into_iter().map(|f| f.into()).collect()
+    impl From<TaxiAvailResp> for Vec<Coordinates> {
+        fn from(data: TaxiAvailResp) -> Self {
+            data.value.into_iter().map(|f| f.into()).collect()
         }
     }
 
-    impl Into<Coordinates> for InternalCoordinates {
-        fn into(self) -> Coordinates {
-            Coordinates {
-                lat: self.lat,
-                long: self.long,
+    impl From<InternalCoordinates> for Coordinates {
+        fn from(data: InternalCoordinates) -> Self {
+            Self {
+                lat: data.lat,
+                long: data.long
             }
         }
     }
@@ -102,9 +102,9 @@ pub mod taxi_stands {
         value: Vec<TaxiStand>,
     }
 
-    impl Into<Vec<TaxiStand>> for TaxiStandsResp {
-        fn into(self) -> Vec<TaxiStand> {
-            self.value
+    impl From<TaxiStandsResp> for Vec<TaxiStand> {
+        fn from(data: TaxiStandsResp) -> Self {
+            data.value
         }
     }
 }
