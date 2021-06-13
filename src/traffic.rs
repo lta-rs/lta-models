@@ -17,7 +17,7 @@ pub mod prelude {
         crate::traffic::traffic_speed_bands::{
             RoadCategory, TrafficSpeedBand, TrafficSpeedBandResp,
         },
-        crate::traffic::vms_emas::{VMSResp, VMS},
+        crate::traffic::vms_emas::{VMSResp, Vms},
     };
 }
 
@@ -589,7 +589,7 @@ pub mod vms_emas {
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/VMS";
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-    pub struct VMS {
+    pub struct Vms {
         #[serde(alias = "EquipmentID")]
         pub equipment_id: String,
 
@@ -605,10 +605,10 @@ pub mod vms_emas {
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct VMSResp {
-        pub value: Vec<VMS>,
+        pub value: Vec<Vms>,
     }
 
-    impl From<VMSResp> for Vec<VMS> {
+    impl From<VMSResp> for Vec<Vms> {
         fn from(data: VMSResp) -> Self {
             data.value
         }
