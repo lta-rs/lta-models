@@ -143,6 +143,7 @@ mod de {
     }
 }
 
+#[rustfmt::skip]
 pub fn criterion_benchmark(c: &mut Criterion) {
     c.bench_function("bike_parking.json", |b| b.iter(|| de::bike_parking()));
     c.bench_function("bus_arrival.json", |b| b.iter(|| de::bus_arrival()));

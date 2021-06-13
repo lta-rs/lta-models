@@ -40,7 +40,7 @@ pub mod taxi_avail {
         fn from(data: InternalCoordinates) -> Self {
             Self {
                 lat: data.lat,
-                long: data.long
+                long: data.long,
             }
         }
     }

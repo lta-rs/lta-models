@@ -14,7 +14,7 @@ pub mod bus_arrival {
     use serde::{Deserialize, Serialize};
 
     use crate::bus_enums::{BusFeature, BusLoad, BusType, Operator};
-    use crate::utils::de::{from_str, treat_error_as_none, from_str_fast_float};
+    use crate::utils::de::{from_str, from_str_fast_float, treat_error_as_none};
 
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2";
 
@@ -50,7 +50,7 @@ pub mod bus_arrival {
             Self {
                 service_no: data.service_no,
                 operator: data.operator,
-                next_bus: [data.next_bus, data.next_bus_2, data.next_bus_3]
+                next_bus: [data.next_bus, data.next_bus_2, data.next_bus_3],
             }
         }
     }
@@ -103,7 +103,7 @@ pub mod bus_arrival {
         fn from(data: RawBusArrivalResp) -> Self {
             Self {
                 bus_stop_code: data.bus_stop_code,
-                services: data.services.into_iter().map(|v| v.into()).collect()
+                services: data.services.into_iter().map(|v| v.into()).collect(),
             }
         }
     }

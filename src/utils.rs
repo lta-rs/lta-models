@@ -216,7 +216,6 @@ pub mod de {
 
         match s.as_ref() {
             "Y" | "Yes" => Ok(true),
-            "N" | "No" => Ok(false),
             _ => Ok(false),
         }
     }
@@ -310,7 +309,7 @@ pub mod de {
         {
             type Value = V;
 
-            fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+            fn expecting(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("string containing / separated elements")
             }
 
