@@ -10,6 +10,7 @@ use serde::{Deserialize, Serialize};
 /// TTS -> Tower Transit Singapore
 ///
 /// GAS -> Go Ahead Singapore
+#[allow(clippy::upper_case_acronyms)]
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(rename_all(deserialize = "PascalCase"))]
 pub enum Operator {
@@ -27,6 +28,7 @@ pub enum Operator {
 /// DD -> Double Decker
 ///
 /// BD -> Bendy
+#[allow(clippy::upper_case_acronyms)]
 #[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize)]
 #[serde(rename_all(deserialize = "PascalCase"))]
 pub enum BusType {

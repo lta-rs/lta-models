@@ -26,7 +26,7 @@ pub mod prelude {
 
 #[cfg(test)]
 mod tests {
-    use crate::bus::bus_arrival::{NextBus, ArrivalBusService};
+    use crate::bus::bus_arrival::{ArrivalBusService, NextBus};
     use crate::bus_enums::{BusFeature, BusType};
     use crate::prelude::*;
     use chrono::{DateTime, FixedOffset};
@@ -187,7 +187,7 @@ mod tests {
 
     #[test]
     fn struct_sz() {
-        let sz = std::mem::size_of::<ArrivalBusService>();
+        let sz = std::mem::size_of::<NextBus>();
         println!("{}", sz);
     }
 }

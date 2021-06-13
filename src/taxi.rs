@@ -52,6 +52,7 @@ pub mod taxi_stands {
 
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/TaxiStands";
 
+    #[allow(clippy::upper_case_acronyms)]
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub enum TaxiStandOwner {
         LTA,

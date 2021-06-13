@@ -206,6 +206,7 @@ pub mod carpark_avail {
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[allow(clippy::upper_case_acronyms)]
     pub enum Agency {
         HDB,
         URA,
@@ -254,6 +255,7 @@ pub mod est_travel_time {
 
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/EstTravelTimes";
 
+    #[allow(clippy::upper_case_acronyms)]
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub enum Highway {
         PIE,

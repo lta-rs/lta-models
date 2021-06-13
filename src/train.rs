@@ -12,6 +12,7 @@ pub mod prelude {
 /// and [Wikipedia](https://en.wikipedia.org/wiki/List_of_Singapore_LRT_stations)
 /// Some of the stations are commented out to prevent misuse as they are technically
 /// not constructed yet or it has not been announced
+#[allow(clippy::upper_case_acronyms)]
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub enum StationCode {
     NS1,
@@ -257,6 +258,7 @@ pub mod train_service_alert {
 
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/TrainServiceAlerts";
 
+    #[allow(clippy::upper_case_acronyms)]
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub enum MrtLine {
         CCL,
