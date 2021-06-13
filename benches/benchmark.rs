@@ -1,5 +1,10 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
+use mimalloc::MiMalloc;
+
+#[global_allocator]
+static GLOBAL: MiMalloc = MiMalloc;
+
 mod de {
     use lta_models::prelude::*;
     use serde::{Deserialize, Serialize};
@@ -150,7 +155,7 @@ pub fn criterion_benchmark(c: &mut Criterion) {
     c.bench_function("faulty_traffic_lights.json", |b| b.iter(|| de::faulty_traffic_lights()));
     c.bench_function("passenger_vol_bus_stops.json", |b| b.iter(|| de::passenger_vol_bus_stops()));
     c.bench_function("passenger_od_bus_stops.json", |b| b.iter(|| de::passenger_vol_od_bus_stops()));
-    c.bench_function("passenger_vol_od_trian.json", |b| b.iter(|| de::passenger_vol_od_train()));
+    c.bench_function("passenger_vol_od_train.json", |b| b.iter(|| de::passenger_vol_od_train()));
     c.bench_function("passenger_vol_train.json", |b| b.iter(|| de::passenger_vol_train()));
     c.bench_function("taxi_avail.json", |b| b.iter(|| de::taxi_avail()));
     c.bench_function("taxi_stands.json", |b| b.iter(|| de::taxi_stands()));
