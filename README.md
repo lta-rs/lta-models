@@ -17,7 +17,11 @@
   </a>
 </p>
 
-This repository contains the data structures required to interact with LTA's datamall APIs.
+This repository contains the data structures required to interact with LTA's datamall APIs. All data structures implements
+`Serialize` and `Deserialize`. 
+
+## How to use this?
+You can use this to deserialize LTA's datamall APIs. You can take a look at [lta-rs](https://github.com/lta-rs/lta-rs) for an example.
 
 ##  License
 lta-models is licensed under MIT license (LICENSE-MIT or http://opensource.org/licenses/MIT)
