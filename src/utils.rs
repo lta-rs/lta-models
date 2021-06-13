@@ -207,7 +207,7 @@ pub mod de {
         Ok(T::deserialize(value).ok())
     }
 
-    /// Simple conversion of Y and N to boolean
+    /// Simple conversion of `Y`,`Yes` and `N`, `No` to boolean
     pub fn from_str_to_bool<'de, D>(deserializer: D) -> Result<bool, D::Error>
     where
         D: Deserializer<'de>,
@@ -270,6 +270,15 @@ pub mod de {
     {
         let s = String::deserialize(deserializer)?;
         T::from_str(&s).map_err(de::Error::custom)
+    }
+
+    pub fn from_str_fast_float<'de, T, D>(deserializer: D) -> Result<T, D::Error>
+    where
+        D: Deserializer<'de>,
+        T: fast_float::FastFloat,
+    {
+        let s = String::deserialize(deserializer)?;
+        fast_float::parse(s).map_err(|_| de::Error::custom("Invalid float string!"))
     }
 
     pub fn from_str_error_as_none<'de, T, D>(deserializer: D) -> Result<Option<T>, D::Error>
