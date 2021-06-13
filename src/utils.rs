@@ -98,7 +98,7 @@ pub mod serde_date {
                     let hr = time.hour();
                     let min = time.minute();
                     let mut sec_str = String::with_capacity(1);
-                    sec_str.push_str("0");
+                    sec_str.push('0');
 
                     let s = [hr.to_string(), min.to_string(), sec_str].join(":");
 
@@ -272,6 +272,8 @@ pub mod de {
         T::from_str(&s).map_err(de::Error::custom)
     }
 
+    /// Uses fast-float crate to deserialise float string instead of using
+    /// the standard library's `FromStr`
     pub fn from_str_fast_float<'de, T, D>(deserializer: D) -> Result<T, D::Error>
     where
         D: Deserializer<'de>,
