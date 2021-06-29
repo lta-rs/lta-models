@@ -1,4 +1,5 @@
 //! Train structs and data structures
+use serde::{Deserialize, Serialize};
 
 pub mod prelude {
     pub use crate::train::train_service_alert::{

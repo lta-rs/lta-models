@@ -1,4 +1,7 @@
 //! Data Structures for lta-rs and for LTA datamall APIs
+
+// Forbid warnings in release builds:
+#![cfg_attr(not(debug_assertions), deny(warnings))]
 #![forbid(unsafe_code)]
 #![warn(
     clippy::all,
@@ -65,10 +68,6 @@
     nonstandard_style,
     rust_2018_idioms
 )]
-#[macro_use]
-extern crate lazy_static;
-#[macro_use]
-extern crate serde;
 
 pub mod bus;
 pub mod bus_enums;

@@ -5,6 +5,8 @@ pub mod prelude {
 }
 
 pub mod geospatial_whole_island {
+    use serde::{Deserialize, Serialize};
+
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct GeospatialWholeIslandRawResp {
         pub value: Vec<GeospatialLink>,

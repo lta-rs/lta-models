@@ -1,5 +1,5 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
-// 
+
 use mimalloc::MiMalloc;
 
 #[global_allocator]

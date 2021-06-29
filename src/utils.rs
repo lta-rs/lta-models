@@ -1,4 +1,5 @@
 //! Utilities for lta-rs
+use serde::Serialize;
 
 /// Coordinate on the map
 #[derive(Debug, Clone, PartialEq, Serialize)]
@@ -35,6 +36,7 @@ impl Location {
 
 /// Regex patterns
 pub mod regex {
+    use lazy_static::lazy_static;
     use regex::Regex;
 
     lazy_static! {
@@ -58,6 +60,8 @@ pub mod serde_date {
 
         const FORMAT: &str = "%Y-%m-%d %H:%M:%S";
 
+        /// # Errors
+        /// Infallible, depending on the type of `date` is provided
         pub fn serialize<S>(date: &Option<DateTime<Utc>>, serializer: S) -> Result<S::Ok, S::Error>
         where
             S: Serializer,
@@ -67,10 +71,12 @@ pub mod serde_date {
                     let s = format!("{}", time.format(FORMAT));
                     serializer.serialize_str(&s)
                 }
-                None => serializer.serialize_str("-"),
+                None => serializer.serialize_none(),
             }
         }
 
+        /// # Errors
+        /// Fails if invalid UTC datetime is provided
         pub fn deserialize<'de, D>(deserializer: D) -> Result<Option<DateTime<Utc>>, D::Error>
         where
             D: Deserializer<'de>,
@@ -86,6 +92,8 @@ pub mod serde_date {
         use chrono::{NaiveTime, Timelike};
         use serde::{Deserialize, Deserializer, Serializer};
 
+        /// # Errors
+        /// Fails when data cant be deserialized to String
         pub fn ser_str_time_opt<S>(
             opt_time: &Option<NaiveTime>,
             serializer: S,
@@ -108,6 +116,8 @@ pub mod serde_date {
             }
         }
 
+        /// # Errors
+        /// Fails if date cannot be parsed in this format HHMM
         pub fn de_str_time_opt_erp<'de, D>(deserializer: D) -> Result<Option<NaiveTime>, D::Error>
         where
             D: Deserializer<'de>,
@@ -126,6 +136,8 @@ pub mod serde_date {
             Ok(time)
         }
 
+        /// # Errors
+        /// Fails if date cannot be parsed in this format HH:MM
         pub fn de_str_time_opt_br<'de, D>(deserializer: D) -> Result<Option<NaiveTime>, D::Error>
         where
             D: Deserializer<'de>,
@@ -151,6 +163,8 @@ pub mod serde_date {
 
         const FORMAT: &str = "%Y-%m-%d";
 
+        /// # Errors
+        /// Fails when data cant be deserialized to String
         pub fn serialize<S>(date: &NaiveDate, serializer: S) -> Result<S::Ok, S::Error>
         where
             S: Serializer,
@@ -159,6 +173,8 @@ pub mod serde_date {
             serializer.serialize_str(&s)
         }
 
+        /// # Errors
+        /// Fails when date isn't the same format as [`crate::utils::serde_date::str_date::FORMAT`]
         pub fn deserialize<'de, D>(deserializer: D) -> Result<NaiveDate, D::Error>
         where
             D: Deserializer<'de>,
@@ -197,7 +213,8 @@ pub mod de {
         }
     }
 
-    /// If error, return None
+    /// # Errors
+    /// Fails when data cant be deserialized to String. Returns None if data is invalid
     pub fn treat_error_as_none<'de, T, D>(deserializer: D) -> Result<Option<T>, D::Error>
     where
         T: Deserialize<'de>,
@@ -208,6 +225,8 @@ pub mod de {
     }
 
     /// Simple conversion of `Y`,`Yes` and `N`, `No` to boolean
+    /// # Errors
+    /// Fails when data cant be deserialized to String. Returns `false` if data is invalid
     pub fn from_str_to_bool<'de, D>(deserializer: D) -> Result<bool, D::Error>
     where
         D: Deserializer<'de>,
@@ -223,6 +242,8 @@ pub mod de {
     /// To be used when coordinates are space separated
     /// in a string and you would like to convert them to a Coordinates
     /// structure.
+    /// # Errors
+    /// Fails when data cant be deserialized to String. Returns None if data is invalid
     pub fn from_str_to_coords<'de, D>(deserializer: D) -> Result<Option<Coordinates>, D::Error>
     where
         D: Deserializer<'de>,
@@ -240,6 +261,8 @@ pub mod de {
         Ok(Some(Coordinates::new(lat, long)))
     }
 
+    /// # Errors
+    /// Fails when data cant be deserialized to String. Returns None if data is invalid
     pub fn from_str_loc_to_loc<'de, D>(deserializer: D) -> Result<Option<Location>, D::Error>
     where
         D: Deserializer<'de>,
@@ -261,6 +284,9 @@ pub mod de {
         )))
     }
 
+    /// Generic implementation of `FromStr`
+    /// # Errors
+    /// Fails when data cant be deserialized to String
     pub fn from_str<'de, T, D>(deserializer: D) -> Result<T, D::Error>
     where
         T: FromStr,
@@ -273,6 +299,8 @@ pub mod de {
 
     /// Uses fast-float crate to deserialise float string instead of using
     /// the standard library's `FromStr`
+    /// # Errors
+    /// Fails when data cant be deserialized to String and when data is an invalid float string
     pub fn from_str_fast_float<'de, T, D>(deserializer: D) -> Result<T, D::Error>
     where
         D: Deserializer<'de>,
@@ -282,6 +310,8 @@ pub mod de {
         fast_float::parse(s).map_err(|_| de::Error::custom("Invalid float string!"))
     }
 
+    /// # Errors
+    /// Fails when data cant be deserialized to String. Returns None on error
     pub fn from_str_error_as_none<'de, T, D>(deserializer: D) -> Result<Option<T>, D::Error>
     where
         T: FromStr,
@@ -292,6 +322,8 @@ pub mod de {
         Ok(T::from_str(&s).ok())
     }
 
+    /// # Errors
+    /// Fails when data cant be deserialized to String
     pub fn delimited<'de, V, T, D>(deserializer: D) -> Result<V, D::Error>
     where
         V: FromIterator<T>,
@@ -317,8 +349,10 @@ pub mod de {
             where
                 E: de::Error,
             {
-                let iter = s.split(T::delimiter()).map(FromStr::from_str);
-                Result::from_iter(iter).map_err(de::Error::custom)
+                s.split(T::delimiter())
+                    .map(FromStr::from_str)
+                    .collect::<Result<_, _>>()
+                    .map_err(de::Error::custom)
             }
         }
 

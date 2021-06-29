@@ -5,6 +5,7 @@ pub mod prelude {
 }
 
 pub mod facilities_maintenance {
+    use serde::{Deserialize, Serialize};
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct FacilityMaintenanceRawResp {
