@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["URL_ROAD_OPENING",""],["URL_ROAD_WORKS",""]],"enum":[["RoadDetailsType",""]],"struct":[["RoadDetails",""],["RoadDetailsResp",""]]});

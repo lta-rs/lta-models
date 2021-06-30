@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["URL",""]],"enum":[["DayType",""],["VehicleType",""],["ZoneId",""]],"struct":[["ErpRate",""],["ErpRatesResp",""],["VehicleError",""]]});

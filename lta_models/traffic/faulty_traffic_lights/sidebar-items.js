@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["URL",""]],"enum":[["TechnicalAlarmType",""]],"struct":[["FaultyTrafficLight",""],["FaultyTrafficLightResp",""]]});

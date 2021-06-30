@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["de","Deserialisation utils"],["regex","Regex patterns"],["serde_date","Utils for date types"]],"struct":[["Coordinates","Coordinate on the map"],["Location","Starting and ending location"]]});

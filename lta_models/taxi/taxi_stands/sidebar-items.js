@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["URL",""]],"enum":[["TaxiStandOwner",""],["TaxiStandType",""]],"struct":[["TaxiStand",""],["TaxiStandsResp",""]]});

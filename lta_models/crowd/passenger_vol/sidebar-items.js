@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["FORMAT",""],["URL_BY_BUS_STOPS",""],["URL_BY_OD_BUS_STOPS",""],["URL_BY_OD_TRAIN",""],["URL_BY_TRAIN",""]],"enum":[["VolType",""]],"struct":[["Link",""],["PassengerVolRawResp",""]]});
