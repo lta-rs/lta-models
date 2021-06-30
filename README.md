@@ -18,10 +18,25 @@
 </p>
 
 This repository contains the data structures required to interact with LTA's datamall APIs. All data structures implements
-`Serialize` and `Deserialize`. 
+`Serialize` and `Deserialize`.
+
+
+## `Cargo.toml` setup
+```toml
+# extra features available: fastfloat
+lta-models = { version = "0.3.0-beta" }
+```
+
+## Performance & `fast-float` implementation
+Some of the deserialization code _may_ benefit from using the `fastfloat` feature, but during testing the biggest performance 
+improvement can be seen when you swap out the system allocator to something faster like [`mimalloc`](https://github.com/microsoft/mimalloc) 
+or [`jemalloc`](https://github.com/jemalloc/jemalloc)
 
 ## How to use this?
 You can use this to deserialize LTA's datamall APIs. You can take a look at [lta-rs](https://github.com/lta-rs/lta-rs) for an example.
+
+## Is there anything that I need to do to use `fastfloat`?
+Just add the feature to your `Cargo.toml`. You don't have to do anything else.
 
 ##  License
 lta-models is licensed under MIT license (LICENSE-MIT or http://opensource.org/licenses/MIT)
