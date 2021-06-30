@@ -244,6 +244,7 @@ pub mod de {
     /// structure.
     /// # Errors
     /// Fails when data cant be deserialized to String. Returns None if data is invalid
+    #[cfg(not(feature = "fastfloat"))]
     pub fn from_str_to_coords<'de, D>(deserializer: D) -> Result<Option<Coordinates>, D::Error>
     where
         D: Deserializer<'de>,
@@ -263,6 +264,7 @@ pub mod de {
 
     /// # Errors
     /// Fails when data cant be deserialized to String. Returns None if data is invalid
+    #[cfg(not(feature = "fastfloat"))]
     pub fn from_str_loc_to_loc<'de, D>(deserializer: D) -> Result<Option<Location>, D::Error>
     where
         D: Deserializer<'de>,
@@ -278,6 +280,57 @@ pub mod de {
         let long_start = caps.get(3).map_or(0.0, |m| m.as_str().parse().unwrap());
         let lat_end = caps.get(5).map_or(0.0, |m| m.as_str().parse().unwrap());
         let long_end = caps.get(7).map_or(0.0, |m| m.as_str().parse().unwrap());
+
+        Ok(Some(Location::new(
+            lat_start, long_start, lat_end, long_end,
+        )))
+    }
+
+    /// Uses fast-float crate to deserialise float string instead of using
+    /// the standard library's `FromStr`.
+    /// To be used when coordinates are space separated
+    /// in a string and you would like to convert them to a Coordinates
+    /// structure.
+    /// # Errors
+    /// Fails when data cant be deserialized to String. Returns None if data is invalid
+    #[cfg(feature = "fastfloat")]
+    pub fn from_str_to_coords<'de, D>(deserializer: D) -> Result<Option<Coordinates>, D::Error>
+        where
+            D: Deserializer<'de>,
+    {
+        let s = String::deserialize(deserializer)?;
+
+        if s.is_empty() || !CARPARK_COORDS_RE.is_match(s.as_str()) {
+            return Ok(None);
+        }
+
+        let caps = CARPARK_COORDS_RE.captures(&s).unwrap();
+        let lat = caps.get(1).map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
+        let long = caps.get(3).map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
+
+        Ok(Some(Coordinates::new(lat, long)))
+    }
+
+    /// Uses fast-float crate to deserialise float string instead of using
+    /// the standard library's `FromStr`.
+    /// # Errors
+    /// Fails when data cant be deserialized to String. Returns None if data is invalid
+    #[cfg(feature = "fastfloat")]
+    pub fn from_str_loc_to_loc<'de, D>(deserializer: D) -> Result<Option<Location>, D::Error>
+        where
+            D: Deserializer<'de>,
+    {
+        let s = String::deserialize(deserializer)?;
+
+        if s.is_empty() || !SPEED_BAND_RE.is_match(s.as_str()) {
+            return Ok(None);
+        }
+
+        let caps = SPEED_BAND_RE.captures(&s).unwrap();
+        let lat_start = caps.get(1).map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
+        let long_start = caps.get(3).map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
+        let lat_end = caps.get(5).map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
+        let long_end = caps.get(7).map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
 
         Ok(Some(Location::new(
             lat_start, long_start, lat_end, long_end,
@@ -301,6 +354,7 @@ pub mod de {
     /// the standard library's `FromStr`
     /// # Errors
     /// Fails when data cant be deserialized to String and when data is an invalid float string
+    #[cfg(feature = "fastfloat")]
     pub fn from_str_fast_float<'de, T, D>(deserializer: D) -> Result<T, D::Error>
     where
         D: Deserializer<'de>,

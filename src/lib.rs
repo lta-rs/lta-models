@@ -90,10 +90,8 @@ pub mod prelude {
 
 #[cfg(test)]
 mod tests {
-    use crate::bus::bus_arrival::{ArrivalBusService, NextBus};
-    use crate::bus_enums::{BusFeature, BusType};
+    use crate::bus::bus_arrival::NextBus;
     use crate::prelude::*;
-    use chrono::{DateTime, FixedOffset};
     use serde::{Deserialize, Serialize};
     use std::fmt::Debug;
 

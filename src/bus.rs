@@ -14,7 +14,10 @@ pub mod bus_arrival {
     use serde::{Deserialize, Serialize};
 
     use crate::bus_enums::{BusFeature, BusLoad, BusType, Operator};
-    use crate::utils::de::{from_str, from_str_fast_float, treat_error_as_none};
+    use crate::utils::de::{from_str, treat_error_as_none};
+
+    #[cfg(feature = "fastfloat")]
+    use crate::utils::de::from_str_fast_float;
 
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2";
 
@@ -67,10 +70,20 @@ pub mod bus_arrival {
         #[serde(alias = "EstimatedArrival")]
         pub est_arrival: DateTime<FixedOffset>,
 
+        #[cfg(feature = "fastfloat")]
         #[serde(deserialize_with = "from_str_fast_float", alias = "Latitude")]
         pub lat: f64,
 
+        #[cfg(feature = "fastfloat")]
         #[serde(deserialize_with = "from_str_fast_float", alias = "Longitude")]
+        pub long: f64,
+
+        #[cfg(not(feature = "fastfloat"))]
+        #[serde(deserialize_with = "from_str", alias = "Latitude")]
+        pub lat: f64,
+
+        #[cfg(not(feature = "fastfloat"))]
+        #[serde(deserialize_with = "from_str", alias = "Longitude")]
         pub long: f64,
 
         #[serde(deserialize_with = "from_str", alias = "VisitNumber")]
