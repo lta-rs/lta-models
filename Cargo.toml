@@ -1,6 +1,6 @@
 [package]
 name = "lta_models"
-version = "0.3.0-beta"
+version = "0.3.0"
 authors = ["budinverse <me@inve.rs>"]
 edition = "2018"
 license = "MIT"
