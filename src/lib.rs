@@ -90,9 +90,11 @@ pub mod prelude {
 
 #[cfg(test)]
 mod tests {
-    use crate::crowd::crowd_density::{StationCrowdLevel, CrowdForecastRawResp, CrowdForecast};
-    use crate::{bus::bus_arrival::NextBus, crowd::crowd_density::StationCrowdLevelRawResp};
+    use crate::crowd::crowd_density::{
+        CrowdDensityForecast, CrowdDensityForecastRawResp, StationCrowdLevel,
+    };
     use crate::prelude::*;
+    use crate::{bus::bus_arrival::NextBus, crowd::crowd_density::StationCrowdLevelRawResp};
     use serde::{Deserialize, Serialize};
     use std::fmt::Debug;
 
@@ -260,8 +262,8 @@ mod tests {
     #[test]
     fn crowd_density_forecast() {
         gen_test!(
-            CrowdForecastRawResp,
-            CrowdForecast,
+            CrowdDensityForecastRawResp,
+            CrowdDensityForecast,
             "../dumped_data/crowd_density_forecast.json"
         );
     }

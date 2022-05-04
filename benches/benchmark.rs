@@ -7,7 +7,7 @@ static GLOBAL: MiMalloc = MiMalloc;
 
 #[rustfmt::skip]
 mod de {
-    use lta_models::prelude::*;
+    use lta_models::{prelude::*, crowd::crowd_density::{CrowdDensityForecast, CrowdDensityForecastRawResp}};
     use serde::{Deserialize, Serialize};
 
     pub fn generate_bench<'de, I, S, F>(input_fn: F) -> S
@@ -22,7 +22,7 @@ mod de {
 
     macro_rules! gen {
         ($a:ty, $b:ty, $c:expr) => {
-            generate_bench::<$a, $b, _>(|| include_str!($c));
+            generate_bench::<$a, $b, _>(|| include_str!($c))
         };
     }
 
@@ -89,6 +89,14 @@ mod de {
     pub fn est_travel_time() -> Vec<EstTravelTime> {
         gen!(EstTravelTimeResp, _, "../dumped_data/est_travel_time.json")
     }
+
+    pub fn crowd_density_rt() -> Vec<StationCrowdLevel> {
+        gen!(StationCrowdLevelRawResp, _, "../dumped_data/crowd_density_rt.json")
+    }
+
+    pub fn crowd_density_forecast() -> CrowdDensityForecast {
+        gen!(CrowdDensityForecastRawResp, _, "../dumped_data/crowd_density_forecast.json")
+    }
 }
 
 #[rustfmt::skip]
@@ -109,6 +117,8 @@ pub fn criterion_benchmark(c: &mut Criterion) {
     c.bench_function("de::taxi_avail.json", |b| b.iter(|| de::taxi_avail()));
     c.bench_function("de::taxi_stands.json", |b| b.iter(|| de::taxi_stands()));
     c.bench_function("de::train_service_alert.json", |b| b.iter(|| de::train_service_alert()));
+    c.bench_function("de::crowd_density_rt.json", |b| b.iter(|| de::crowd_density_rt()));
+    c.bench_function("de::crowd_density_forecast.json", |b| b.iter(|| de::crowd_density_forecast()));
 
     let bike_parking = de::bike_parking();
     let bus_arrival = de::bus_arrival();
@@ -126,6 +136,8 @@ pub fn criterion_benchmark(c: &mut Criterion) {
     let taxi_avail = de::taxi_avail();
     let taxi_stands = de::taxi_stands();
     let train_service_alert = de::train_service_alert();
+    let crowd_density_rt = de::crowd_density_rt();
+    let crowd_density_forecast = de::crowd_density_forecast();
 
     c.bench_function("ser::bike_parking.json", |b| b.iter(|| serde_json::to_string(black_box(&bike_parking))));
     c.bench_function("ser::bus_arrival.json", |b| b.iter(|| serde_json::to_string(black_box(&bus_arrival))));
@@ -143,6 +155,8 @@ pub fn criterion_benchmark(c: &mut Criterion) {
     c.bench_function("ser::taxi_avail.json", |b| b.iter(|| serde_json::to_string(black_box(&taxi_avail))));
     c.bench_function("ser::taxi_stands.json", |b| b.iter(|| serde_json::to_string(black_box(&taxi_stands))));
     c.bench_function("ser::train_service_alert.json", |b| b.iter(|| serde_json::to_string(black_box(&train_service_alert))));
+    c.bench_function("ser::crowd_density_rt.json", |b| b.iter(|| serde_json::to_string(black_box(&crowd_density_rt))));
+    c.bench_function("ser::crowd_density_forecast.json", |b| b.iter(|| serde_json::to_string(black_box(&crowd_density_forecast))));
 }
 
 criterion_group!(benches, criterion_benchmark);

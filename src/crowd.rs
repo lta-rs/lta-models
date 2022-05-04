@@ -2,7 +2,7 @@
 
 pub mod prelude {
     pub use crate::crowd::crowd_density::{
-        CrowdInterval, CrowdLevel, StationCrowdForecast, StationCrowdLevel,
+        CrowdInterval, CrowdLevel, StationCrowdForecast, StationCrowdLevel, StationCrowdLevelRawResp
     };
     pub use crate::crowd::passenger_vol::{Link, PassengerVolRawResp, VolType};
 }
@@ -45,15 +45,15 @@ pub mod crowd_density {
 
     #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
     #[serde(rename_all(deserialize = "PascalCase"))]
-    pub struct CrowdForecast {
+    pub struct CrowdDensityForecast {
         #[serde(alias = "Date")]
         pub datetime: DateTime<FixedOffset>,
         pub stations: Vec<StationCrowdForecast>,
     }
 
     #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-    pub struct CrowdForecastRawResp {
-        value: Vec<CrowdForecast>,
+    pub struct CrowdDensityForecastRawResp {
+        value: Vec<CrowdDensityForecast>,
     }
 
     #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -76,8 +76,8 @@ pub mod crowd_density {
         }
     }
 
-    impl From<CrowdForecastRawResp> for CrowdForecast {
-        fn from(mut data: CrowdForecastRawResp) -> Self {
+    impl From<CrowdDensityForecastRawResp> for CrowdDensityForecast {
+        fn from(mut data: CrowdDensityForecastRawResp) -> Self {
             data.value.pop().unwrap()
         }
     }
