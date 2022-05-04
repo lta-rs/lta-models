@@ -10,8 +10,8 @@ pub mod prelude {
 pub mod crowd_density {
     use chrono::{DateTime, FixedOffset};
     use serde::{Deserialize, Serialize};
-
     use crate::train::StationCode;
+    
     pub const URL_CROWD_DENSITY_RT: &str =
         "http://datamall2.mytransport.sg/ltaodataservice/PCDRealTime";
 

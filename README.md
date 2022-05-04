@@ -17,8 +17,7 @@
   </a>
 </p>
 
-This repository contains the data structures required to interact with LTA's datamall APIs. All data structures implements
-`Serialize` and `Deserialize`.
+This repository contains the data structures required to interact with LTA's datamall APIs. All data structures implements `Serialize` and `Deserialize`.
 
 
 ## `Cargo.toml` setup
