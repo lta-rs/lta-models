@@ -1,7 +1,86 @@
 //! Crowd structs and data structures
 
 pub mod prelude {
+    pub use crate::crowd::crowd_density::{
+        CrowdInterval, CrowdLevel, StationCrowdForecast, StationCrowdLevel, StationCrowdLevelRawResp
+    };
     pub use crate::crowd::passenger_vol::{Link, PassengerVolRawResp, VolType};
+}
+
+pub mod crowd_density {
+    use chrono::{DateTime, FixedOffset};
+    use serde::{Deserialize, Serialize};
+    use crate::train::StationCode;
+    
+    pub const URL_CROWD_DENSITY_RT: &str =
+        "http://datamall2.mytransport.sg/ltaodataservice/PCDRealTime";
+
+    pub const URL_CROWD_FORECAST: &str =
+        "http://datamall2.mytransport.sg/ltaodataservice/PCDForecast";
+
+    #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+    #[serde(rename_all(deserialize = "lowercase"))]
+    pub enum CrowdLevel {
+        Low,
+        High,
+        Moderate,
+
+        #[serde(other)]
+        Na,
+    }
+
+    #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+    #[serde(rename_all(deserialize = "PascalCase"))]
+    pub struct StationCrowdLevel {
+        pub station: StationCode,
+        pub start_time: DateTime<FixedOffset>,
+        pub end_time: DateTime<FixedOffset>,
+        pub crowd_level: CrowdLevel,
+    }
+
+    #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+    pub struct StationCrowdLevelRawResp {
+        value: Vec<StationCrowdLevel>,
+    }
+
+    #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+    #[serde(rename_all(deserialize = "PascalCase"))]
+    pub struct CrowdDensityForecast {
+        #[serde(alias = "Date")]
+        pub datetime: DateTime<FixedOffset>,
+        pub stations: Vec<StationCrowdForecast>,
+    }
+
+    #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+    pub struct CrowdDensityForecastRawResp {
+        value: Vec<CrowdDensityForecast>,
+    }
+
+    #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+    #[serde(rename_all(deserialize = "PascalCase"))]
+    pub struct StationCrowdForecast {
+        pub station: StationCode,
+        pub interval: Vec<CrowdInterval>,
+    }
+
+    #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+    #[serde(rename_all(deserialize = "PascalCase"))]
+    pub struct CrowdInterval {
+        pub start: DateTime<FixedOffset>,
+        pub crowd_level: CrowdLevel,
+    }
+
+    impl From<StationCrowdLevelRawResp> for Vec<StationCrowdLevel> {
+        fn from(data: StationCrowdLevelRawResp) -> Self {
+            data.value
+        }
+    }
+
+    impl From<CrowdDensityForecastRawResp> for CrowdDensityForecast {
+        fn from(mut data: CrowdDensityForecastRawResp) -> Self {
+            data.value.pop().unwrap()
+        }
+    }
 }
 
 pub mod passenger_vol {
