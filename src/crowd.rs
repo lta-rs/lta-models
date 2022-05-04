@@ -32,10 +32,10 @@ pub mod crowd_density {
     #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
     #[serde(rename_all(deserialize = "PascalCase"))]
     pub struct StationCrowdLevel {
-        station: StationCode,
-        start_time: DateTime<FixedOffset>,
-        end_time: DateTime<FixedOffset>,
-        crowd_level: CrowdLevel,
+        pub station: StationCode,
+        pub start_time: DateTime<FixedOffset>,
+        pub end_time: DateTime<FixedOffset>,
+        pub crowd_level: CrowdLevel,
     }
 
     #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -47,8 +47,8 @@ pub mod crowd_density {
     #[serde(rename_all(deserialize = "PascalCase"))]
     pub struct CrowdForecast {
         #[serde(alias = "Date")]
-        datetime: DateTime<FixedOffset>,
-        stations: Vec<StationCrowdForecast>,
+        pub datetime: DateTime<FixedOffset>,
+        pub stations: Vec<StationCrowdForecast>,
     }
 
     #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -59,15 +59,15 @@ pub mod crowd_density {
     #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
     #[serde(rename_all(deserialize = "PascalCase"))]
     pub struct StationCrowdForecast {
-        station: StationCode,
-        interval: Vec<CrowdInterval>,
+        pub station: StationCode,
+        pub interval: Vec<CrowdInterval>,
     }
 
     #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
     #[serde(rename_all(deserialize = "PascalCase"))]
     pub struct CrowdInterval {
-        start: DateTime<FixedOffset>,
-        crowd_level: CrowdLevel,
+        pub start: DateTime<FixedOffset>,
+        pub crowd_level: CrowdLevel,
     }
 
     impl From<StationCrowdLevelRawResp> for Vec<StationCrowdLevel> {
