@@ -27,9 +27,7 @@ lta-models = { version = "0.3.0" }
 ```
 
 ## Performance & `fast-float` implementation
-Some of the deserialization code _may_ benefit from using the `fastfloat` feature, but during testing the biggest performance 
-improvement can be seen when you swap out the system allocator to something faster like [`mimalloc`](https://github.com/microsoft/mimalloc) 
-or [`jemalloc`](https://github.com/jemalloc/jemalloc)
+Some of the deserialization code _may_ benefit from using the `fastfloat` feature, but during testing the biggest performance improvement can be seen when you swap out the system allocator to something faster like [`mimalloc`](https://github.com/microsoft/mimalloc) or [`jemalloc`](https://github.com/jemalloc/jemalloc)
 
 ## How to use this?
 You can use this to deserialize LTA's datamall APIs. You can take a look at [lta-rs](https://github.com/lta-rs/lta-rs) for an example.
