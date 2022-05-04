@@ -90,7 +90,8 @@ pub mod prelude {
 
 #[cfg(test)]
 mod tests {
-    use crate::bus::bus_arrival::NextBus;
+    use crate::crowd::crowd_density::{StationCrowdLevel, CrowdForecastRawResp, CrowdForecast};
+    use crate::{bus::bus_arrival::NextBus, crowd::crowd_density::StationCrowdLevelRawResp};
     use crate::prelude::*;
     use serde::{Deserialize, Serialize};
     use std::fmt::Debug;
@@ -244,6 +245,24 @@ mod tests {
             EstTravelTimeResp,
             Vec<EstTravelTime>,
             "../dumped_data/est_travel_time.json"
+        );
+    }
+
+    #[test]
+    fn crowd_density_rt() {
+        gen_test!(
+            StationCrowdLevelRawResp,
+            Vec<StationCrowdLevel>,
+            "../dumped_data/crowd_density_rt.json"
+        );
+    }
+
+    #[test]
+    fn crowd_density_forecast() {
+        gen_test!(
+            CrowdForecastRawResp,
+            CrowdForecast,
+            "../dumped_data/crowd_density_forecast.json"
         );
     }
 
