@@ -2,16 +2,17 @@
 
 pub mod prelude {
     pub use crate::crowd::crowd_density::{
-        CrowdInterval, CrowdLevel, StationCrowdForecast, StationCrowdLevel, StationCrowdLevelRawResp
+        CrowdDensityForecastRawResp, CrowdInterval, CrowdLevel, StationCrowdForecast,
+        StationCrowdLevel, StationCrowdLevelRawResp, CrowdDensityForecast
     };
     pub use crate::crowd::passenger_vol::{Link, PassengerVolRawResp, VolType};
 }
 
 pub mod crowd_density {
+    use crate::train::StationCode;
     use chrono::{DateTime, FixedOffset};
     use serde::{Deserialize, Serialize};
-    use crate::train::StationCode;
-    
+
     pub const URL_CROWD_DENSITY_RT: &str =
         "http://datamall2.mytransport.sg/ltaodataservice/PCDRealTime";
 
