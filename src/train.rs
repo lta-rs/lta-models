@@ -81,7 +81,7 @@ pub enum StationCode {
     CG1,
     CG2,
     NE1,
-    // NE2, reserved for possible future MRT station
+    NE2, // reserved for possible future MRT station
     NE3,
     NE4,
     NE5,
@@ -114,7 +114,7 @@ pub enum StationCode {
     CC15,
     CC16,
     CC17,
-    //CC18, bukit brown, not constructed yet
+    CC18, // bukit brown
     CC19,
     CC20,
     CC21,
@@ -126,9 +126,9 @@ pub enum StationCode {
     CC27,
     CC28,
     CC29,
-    // CC30, keppel
-    // CC31, cantonment
-    // CC32, prince edward road
+    CC30, //  keppel
+    CC31, //  cantonment
+    CC32, //  prince edward road
     CC33,
     CC34,
     CE1,
@@ -136,7 +136,7 @@ pub enum StationCode {
     DT1,
     DT2,
     DT3,
-    // DT4, hume
+    DT4, // hume
     DT5,
     DT6,
     DT7,
@@ -168,40 +168,40 @@ pub enum StationCode {
     DT33,
     DT34,
     DT35,
-    // DT36, Xilin
-    // DT37, Sungei Bedok
+    DT36, // Xilin
+    DT37, // Sungei Bedok
     TE1,
     TE2,
     TE3,
-    // TE4, Springleaf
-    // TE5, Lentor
-    // TE6, Mayflower
-    // TE7, Bright Hill
-    // TE8, Upper Thomson
-    // TE9, Caldecott
-    // TE10, Mount Pleasant
-    // TE11, Stevens
-    // TE12, Napier
-    // TE13, Orchard Boulevard
-    // TE14, Orchard
-    // TE15, Great World
-    // TE16, Havelock
-    // TE17, Outram Park
-    // TE18, Maxwell
-    // TE19, Shenton Way
-    // TE20, Marina Bay
-    // TE21, Marina South
-    // TE22, Gardens By The Bay
-    // TE22A, Founders' Memorial
-    // TE23, Tanjong Rhu
-    // TE24, Katong Park
-    // TE25, Tanjong Katong
-    // TE26, Marine Parade
-    // TE27, Marine Terrace
-    // TE28, Siglap
-    // TE29, Bayshore
-    // TE30, Bedok South
-    // TE31, Sungei Bedok
+    TE4,   //  Springleaf
+    TE5,   //  Lentor
+    TE6,   //  Mayflower
+    TE7,   //  Bright Hill
+    TE8,   //  Upper Thomson
+    TE9,   //  Caldecott
+    TE10,  //  Mount Pleasant
+    TE11,  //  Stevens
+    TE12,  //  Napier
+    TE13,  //  Orchard Boulevard
+    TE14,  //  Orchard
+    TE15,  //  Great World
+    TE16,  //  Havelock
+    TE17,  //  Outram Park
+    TE18,  //  Maxwell
+    TE19,  //  Shenton Way
+    TE20,  //  Marina Bay
+    TE21,  //  Marina South
+    TE22,  //  Gardens By The Bay
+    TE22A, //  Founders' Memorial
+    TE23,  //  Tanjong Rhu
+    TE24,  //  Katong Park
+    TE25,  //  Tanjong Katong
+    TE26,  //  Marine Parade
+    TE27,  //  Marine Terrace
+    TE28,  //  Siglap
+    TE29,  //  Bayshore
+    TE30,  //  Bedok South
+    TE31,  //  Sungei Bedok
     BP1,
     BP2,
     BP3,
