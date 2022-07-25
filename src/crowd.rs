@@ -13,9 +13,11 @@ pub mod crowd_density {
     use chrono::{DateTime, FixedOffset};
     use serde::{Deserialize, Serialize};
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL_CROWD_DENSITY_RT: &str =
         "http://datamall2.mytransport.sg/ltaodataservice/PCDRealTime";
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL_CROWD_FORECAST: &str =
         "http://datamall2.mytransport.sg/ltaodataservice/PCDForecast";
 
@@ -87,13 +89,17 @@ pub mod crowd_density {
 pub mod passenger_vol {
     use serde::{Deserialize, Serialize};
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL_BY_BUS_STOPS: &str = "http://datamall2.mytransport.sg/ltaodataservice/PV/Bus";
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL_BY_OD_BUS_STOPS: &str =
         "http://datamall2.mytransport.sg/ltaodataservice/PV/ODBus";
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL_BY_TRAIN: &str = "http://datamall2.mytransport.sg/ltaodataservice/PV/Train";
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL_BY_OD_TRAIN: &str = "http://datamall2.mytransport.sg/ltaodataservice/PV/ODTrain";
 
     pub const FORMAT: &str = "%Y%m";
