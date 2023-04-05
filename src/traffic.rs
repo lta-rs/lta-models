@@ -24,6 +24,7 @@ pub mod prelude {
 pub mod erp_rates {
     use core::fmt;
     use serde::{Deserialize, Serialize};
+    use time::{Time, Date};
     use std::fmt::Formatter;
     use std::str::FromStr;
 
@@ -34,8 +35,8 @@ pub mod erp_rates {
             str_time_option::{de_str_time_opt_erp, ser_str_time_opt},
         },
     };
-    use chrono::{NaiveDate, NaiveTime};
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/ERPRates";
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -158,13 +159,13 @@ pub mod erp_rates {
             deserialize_with = "de_str_time_opt_erp",
             serialize_with = "ser_str_time_opt"
         )]
-        pub start_time: Option<NaiveTime>,
+        pub start_time: Option<Time>,
 
         #[serde(
             deserialize_with = "de_str_time_opt_erp",
             serialize_with = "ser_str_time_opt"
         )]
-        pub end_time: Option<NaiveTime>,
+        pub end_time: Option<Time>,
 
         #[serde(alias = "ZoneID")]
         pub zone_id: ZoneId,
@@ -173,7 +174,7 @@ pub mod erp_rates {
         pub charge_amt: f32,
 
         #[serde(with = "str_date")]
-        pub effective_date: NaiveDate,
+        pub effective_date: Date,
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -194,6 +195,7 @@ pub mod carpark_avail {
     use crate::utils::de::from_str_to_coords;
     use crate::utils::Coordinates;
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/CarParkAvailabilityv2";
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -254,6 +256,7 @@ pub mod est_travel_time {
     use serde::{Deserialize, Serialize};
     use serde_repr::*;
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/EstTravelTimes";
 
     #[allow(clippy::upper_case_acronyms)]
@@ -316,11 +319,12 @@ pub mod est_travel_time {
 }
 
 pub mod faulty_traffic_lights {
-    use chrono::prelude::*;
     use serde::{Deserialize, Serialize};
+    use time::OffsetDateTime;
 
     use crate::utils::serde_date::ymd_hms_option;
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/FaultyTrafficLights";
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -344,10 +348,10 @@ pub mod faulty_traffic_lights {
         pub technical_alarm_type: TechnicalAlarmType,
 
         #[serde(with = "ymd_hms_option")]
-        pub start_date: Option<DateTime<Utc>>,
+        pub start_date: Option<OffsetDateTime>,
 
         #[serde(with = "ymd_hms_option")]
-        pub end_date: Option<DateTime<Utc>>,
+        pub end_date: Option<OffsetDateTime>,
 
         pub message: String,
     }
@@ -365,13 +369,16 @@ pub mod faulty_traffic_lights {
 }
 
 pub mod road {
-    use chrono::prelude::*;
     use serde::{Deserialize, Serialize};
+    use time::Date;
 
     use crate::utils::serde_date::str_date;
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL_ROAD_OPENING: &str =
         "http://datamall2.mytransport.sg/ltaodataservice/RoadOpenings";
+        
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL_ROAD_WORKS: &str = "http://datamall2.mytransport.sg/ltaodataservice/RoadWorks";
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -389,10 +396,10 @@ pub mod road {
         pub event_id: String,
 
         #[serde(with = "str_date")]
-        pub start_date: NaiveDate,
+        pub start_date: Date,
 
         #[serde(with = "str_date")]
-        pub end_date: NaiveDate,
+        pub end_date: Date,
 
         #[serde(alias = "SvcDept")]
         pub service_dept: String,
@@ -419,6 +426,7 @@ pub mod traffic_images {
 
     use crate::utils::de::from_str;
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/Traffic-Imagesv2";
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -451,6 +459,7 @@ pub mod traffic_images {
 pub mod traffic_incidents {
     use serde::{Deserialize, Serialize};
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/TrafficIncidents";
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -517,9 +526,9 @@ pub mod traffic_incidents {
 pub mod traffic_speed_bands {
     use serde::{Deserialize, Serialize};
 
-    use crate::utils::de::{from_str, from_str_loc_to_loc};
-    use crate::utils::Location;
+    use crate::utils::de::from_str;
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/TrafficSpeedBandsv2";
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -567,8 +576,17 @@ pub mod traffic_speed_bands {
         #[serde(alias = "MaximumSpeed", deserialize_with = "from_str")]
         pub max_speed: u32,
 
-        #[serde(alias = "Location", deserialize_with = "from_str_loc_to_loc")]
-        pub coord_start_end: Option<Location>,
+        #[serde(deserialize_with = "from_str")]
+        pub start_lon: f64,
+
+        #[serde(deserialize_with = "from_str")]
+        pub start_lat: f64,
+
+        #[serde(deserialize_with = "from_str")]    
+        pub end_lon: f64,
+
+        #[serde(deserialize_with = "from_str")]
+        pub end_lat: f64
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -586,6 +604,7 @@ pub mod traffic_speed_bands {
 pub mod vms_emas {
     use serde::{Deserialize, Serialize};
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/VMS";
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -620,6 +639,7 @@ pub mod bike_parking {
 
     use crate::utils::de::from_str_to_bool;
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BicycleParkingv2";
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -695,6 +715,28 @@ pub mod bike_parking {
     impl From<BikeParkingResp> for Vec<BikeParking> {
         fn from(data: BikeParkingResp) -> Self {
             data.value
+        }
+    }
+}
+
+pub mod traffic_flow {
+    use serde::{Deserialize, Serialize};
+
+    
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[serde(rename_all(deserialize = "PascalCase"))]
+    pub struct TrafficFlowLink {
+        link: String
+    }
+    
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    pub struct TrafficFlowRawResp {
+        pub value: Vec<TrafficFlowLink>,
+    }
+
+    impl From<TrafficFlowRawResp> for Vec<String> {
+        fn from(data: TrafficFlowRawResp) -> Self {
+            data.value.into_iter().map(|v| v.link).collect()
         }
     }
 }

@@ -257,6 +257,7 @@ pub mod train_service_alert {
     use std::ops::Deref;
     use std::str::FromStr;
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/TrainServiceAlerts";
 
     #[allow(clippy::upper_case_acronyms)]

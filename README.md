@@ -10,7 +10,7 @@
     <img src="https://img.shields.io/badge/docs-main--branch-red"/>
   </a>
   <a href="https://github.com/lta-rs/lta-models/actions">
-    <img src="https://img.shields.io/github/workflow/status/lta-rs/lta-models/Test%20Rust%20project/main"/>
+    <img src="https://img.shields.io/github/actions/workflow/status/lta-rs/lta-models/rust.yml?branch=main"/>
   </a>
   <a href="https://crates.io/crates/lta_models">
     <img src="https://img.shields.io/crates/v/lta-models"/>
@@ -23,7 +23,7 @@ This repository contains the data structures required to interact with LTA's dat
 ## `Cargo.toml` setup
 ```toml
 # extra features available: fastfloat
-lta-models = { version = "0.4.0" }
+lta-models = { version = "0.5.0" }
 ```
 
 ## Performance & `fast-float` implementation

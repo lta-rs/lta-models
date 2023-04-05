@@ -10,8 +10,8 @@ pub mod prelude {
 }
 
 pub mod bus_arrival {
-    use chrono::prelude::*;
     use serde::{Deserialize, Serialize};
+    use time::{OffsetDateTime, serde::iso8601};
 
     use crate::bus_enums::{BusFeature, BusLoad, BusType, Operator};
     use crate::utils::de::{from_str, treat_error_as_none};
@@ -19,6 +19,7 @@ pub mod bus_arrival {
     #[cfg(feature = "fastfloat")]
     use crate::utils::de::from_str_fast_float;
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2";
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -66,9 +67,10 @@ pub mod bus_arrival {
 
         #[serde(deserialize_with = "from_str", alias = "DestinationCode")]
         pub dest_code: u32,
-
-        #[serde(alias = "EstimatedArrival")]
-        pub est_arrival: DateTime<FixedOffset>,
+        
+        /// Time in GMT+8
+        #[serde(alias = "EstimatedArrival", deserialize_with = "iso8601::deserialize")]
+        pub est_arrival: OffsetDateTime,
 
         #[cfg(feature = "fastfloat")]
         #[serde(deserialize_with = "from_str_fast_float", alias = "Latitude")]
@@ -127,6 +129,8 @@ pub mod bus_services {
     use crate::utils::de::from_str_error_as_none;
     use crate::utils::regex::BUS_FREQ_RE;
     use serde::{Deserialize, Deserializer, Serialize};
+    
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BusServices";
 
     /// Both min and max are in terms of minutes
@@ -231,13 +235,14 @@ pub mod bus_services {
     }
 }
 pub mod bus_routes {
-    use chrono::prelude::*;
     use serde::{Deserialize, Serialize};
+    use time::Time;
 
     use crate::bus_enums::Operator;
     use crate::utils::de::from_str;
     use crate::utils::serde_date::str_time_option::{de_str_time_opt_br, ser_str_time_opt};
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BusRoutes";
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -263,42 +268,42 @@ pub mod bus_routes {
             deserialize_with = "de_str_time_opt_br",
             serialize_with = "ser_str_time_opt"
         )]
-        pub wd_first: Option<NaiveTime>,
+        pub wd_first: Option<Time>,
 
         #[serde(
             alias = "WD_LastBus",
             deserialize_with = "de_str_time_opt_br",
             serialize_with = "ser_str_time_opt"
         )]
-        pub wd_last: Option<NaiveTime>,
+        pub wd_last: Option<Time>,
 
         #[serde(
             alias = "SAT_FirstBus",
             deserialize_with = "de_str_time_opt_br",
             serialize_with = "ser_str_time_opt"
         )]
-        pub sat_first: Option<NaiveTime>,
+        pub sat_first: Option<Time>,
 
         #[serde(
             alias = "SAT_LastBus",
             deserialize_with = "de_str_time_opt_br",
             serialize_with = "ser_str_time_opt"
         )]
-        pub sat_last: Option<NaiveTime>,
+        pub sat_last: Option<Time>,
 
         #[serde(
             alias = "SUN_FirstBus",
             deserialize_with = "de_str_time_opt_br",
             serialize_with = "ser_str_time_opt"
         )]
-        pub sun_first: Option<NaiveTime>,
+        pub sun_first: Option<Time>,
 
         #[serde(
             alias = "SUN_LastBus",
             deserialize_with = "de_str_time_opt_br",
             serialize_with = "ser_str_time_opt"
         )]
-        pub sun_last: Option<NaiveTime>,
+        pub sun_last: Option<Time>,
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -317,6 +322,7 @@ pub mod bus_stops {
 
     use crate::utils::de::from_str;
 
+    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BusStops";
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
