@@ -1,197 +1,191 @@
 {
-    "odata.metadata": "http://datamall2.mytransport.sg/ltaodataservice/$metadata#PcdRealTime",
-    "value": [
-      {
-        "Station": "EW21",
-        "StartTime": "2022-05-04T19:00:00+08:00",
-        "EndTime": "2022-05-04T19:10:00+08:00",
-        "CrowdLevel": "m"
-      },
-      {
-        "Station": "EW23",
-        "StartTime": "2022-05-04T19:00:00+08:00",
-        "EndTime": "2022-05-04T19:10:00+08:00",
-        "CrowdLevel": "m"
-      },
-      {
-        "Station": "EW7",
-        "StartTime": "2022-05-04T19:00:00+08:00",
-        "EndTime": "2022-05-04T19:10:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW8",
-        "StartTime": "2022-05-04T19:00:00+08:00",
-        "EndTime": "2022-05-04T19:10:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW24",
-        "StartTime": "2022-05-04T19:00:00+08:00",
-        "EndTime": "2022-05-04T19:10:00+08:00",
-        "CrowdLevel": "h"
-      },
-      {
-        "Station": "EW9",
-        "StartTime": "2022-05-04T19:00:00+08:00",
-        "EndTime": "2022-05-04T19:10:00+08:00",
-        "CrowdLevel": "na"
-      },
-      {
-        "Station": "EW5",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW14",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW1",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW10",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW11",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW12",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW15",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW16",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW17",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW18",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW19",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW2",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW20",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW22",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW25",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW26",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW27",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW28",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW29",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW3",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW30",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW31",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW32",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW33",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW6",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      },
-      {
-        "Station": "EW13",
-        "StartTime": "2022-05-04T19:10:00+08:00",
-        "EndTime": "2022-05-04T19:20:00+08:00",
-        "CrowdLevel": "l"
-      }
-    ]
-  }
+  "odata.metadata": "http://datamall2.mytransport.sg/ltaodataservice/$metadata#PcdRealTime",
+  "value": [
+    {
+      "Station": "EW1",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW10",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW11",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW12",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW13",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW14",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW15",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW16",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW17",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW18",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW19",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW2",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW20",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW21",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW22",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW23",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW24",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW25",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW26",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW27",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW28",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW29",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW3",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW30",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW31",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW32",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW33",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW5",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW6",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW7",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    },
+    {
+      "Station": "EW9",
+      "StartTime": "2023-04-05T22:30:00+08:00",
+      "EndTime": "2023-04-05T22:40:00+08:00",
+      "CrowdLevel": "l"
+    }
+  ]
+}
