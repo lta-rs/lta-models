@@ -526,8 +526,7 @@ pub mod traffic_incidents {
 pub mod traffic_speed_bands {
     use serde::{Deserialize, Serialize};
 
-    use crate::utils::de::{from_str, from_str_loc_to_loc};
-    use crate::utils::Location;
+    use crate::utils::de::from_str;
 
     #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/TrafficSpeedBandsv2";
@@ -577,8 +576,17 @@ pub mod traffic_speed_bands {
         #[serde(alias = "MaximumSpeed", deserialize_with = "from_str")]
         pub max_speed: u32,
 
-        #[serde(alias = "Location", deserialize_with = "from_str_loc_to_loc")]
-        pub coord_start_end: Option<Location>,
+        #[serde(deserialize_with = "from_str")]
+        pub start_lon: f64,
+
+        #[serde(deserialize_with = "from_str")]
+        pub start_lat: f64,
+
+        #[serde(deserialize_with = "from_str")]    
+        pub end_lon: f64,
+
+        #[serde(deserialize_with = "from_str")]
+        pub end_lat: f64
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -707,6 +715,28 @@ pub mod bike_parking {
     impl From<BikeParkingResp> for Vec<BikeParking> {
         fn from(data: BikeParkingResp) -> Self {
             data.value
+        }
+    }
+}
+
+pub mod traffic_flow {
+    use serde::{Deserialize, Serialize};
+
+    
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[serde(rename_all(deserialize = "PascalCase"))]
+    pub struct TrafficFlowLink {
+        link: String
+    }
+    
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    pub struct TrafficFlowRawResp {
+        pub value: Vec<TrafficFlowLink>,
+    }
+
+    impl From<TrafficFlowRawResp> for Vec<String> {
+        fn from(data: TrafficFlowRawResp) -> Self {
+            data.value.into_iter().map(|v| v.link).collect()
         }
     }
 }

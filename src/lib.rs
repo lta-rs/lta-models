@@ -83,18 +83,15 @@ pub use chrono;
 /// Data structures for all data
 pub mod prelude {
     pub use {
-        crate::bus::prelude::*, crate::crowd::prelude::*, crate::taxi::prelude::*,
-        crate::traffic::prelude::*, crate::train::prelude::*,
+        crate::bus::prelude::*, crate::crowd::prelude::*, crate::facility::prelude::*,
+        crate::geo::prelude::*, crate::taxi::prelude::*, crate::traffic::prelude::*,
+        crate::train::prelude::*,
     };
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::crowd::crowd_density::{
-        CrowdDensityForecast, CrowdDensityForecastRawResp, StationCrowdLevel,
-    };
-    use crate::prelude::*;
-    use crate::{bus::bus_arrival::NextBus, crowd::crowd_density::StationCrowdLevelRawResp};
+    use crate::{prelude::*, traffic::traffic_flow::TrafficFlowRawResp};
     use serde::{Deserialize, Serialize};
     use std::fmt::Debug;
 
@@ -215,6 +212,20 @@ mod tests {
     }
 
     #[test]
+    fn traffic_speed_bands() {
+        gen_test!(
+            TrafficSpeedBandResp,
+            Vec<TrafficSpeedBand>,
+            "../dumped_data/traffic_speed_bands.json"
+        );
+    }
+
+    #[test]
+    fn vms_emas() {
+        gen_test!(VMSResp, Vec<Vms>, "../dumped_data/vms_emas.json");
+    }
+
+    #[test]
     fn taxi_avail() {
         gen_test!(
             TaxiAvailResp,
@@ -269,8 +280,56 @@ mod tests {
     }
 
     #[test]
-    fn struct_sz() {
-        let sz = std::mem::size_of::<NextBus>();
-        println!("{}", sz);
+    fn road_works() {
+        gen_test!(
+            RoadDetailsResp,
+            Vec<RoadDetails>,
+            "../dumped_data/road_works.json"
+        );
+    }
+
+    #[test]
+    fn geospatial_whole_island() {
+        gen_test!(
+            GeospatialWholeIslandRawResp,
+            Vec<String>,
+            "../dumped_data/geospatial_whole_island.json"
+        );
+    }
+
+    #[test]
+    fn traffic_flow() {
+        gen_test!(
+            TrafficFlowRawResp,
+            Vec<String>,
+            "../dumped_data/traffic_flow.json"
+        );
+    }
+
+    #[test]
+    fn traffic_images() {
+        gen_test!(
+            TrafficImageResp,
+            Vec<TrafficImage>,
+            "../dumped_data/traffic_images.json"
+        );
+    }
+
+    #[test]
+    fn traffic_incidents() {
+        gen_test!(
+            TrafficIncidentResp,
+            Vec<TrafficIncident>,
+            "../dumped_data/traffic_incidents.json"
+        );
+    }
+
+    #[test]
+    fn facilities_maintenance() {
+        gen_test!(
+            FacilityMaintenanceRawResp,
+            Vec<String>,
+            "../dumped_data/facilities_maintainence.json"
+        );
     }
 }
