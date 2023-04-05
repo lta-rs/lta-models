@@ -10,6 +10,7 @@ jobs:
         rust: [stable, nightly]
 
     steps:
+    - uses: rui314/setup-mold@v1
     - uses: hecrj/setup-rust-action@v1
       with:
         rust-version: ${{ matrix.rust }}
@@ -26,6 +27,7 @@ jobs:
         rust: [stable, nightly]
 
     steps:
+    - uses: rui314/setup-mold@v1
     - uses: hecrj/setup-rust-action@v1
       with:
         rust-version: ${{ matrix.rust }}
@@ -37,6 +39,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: rui314/setup-mold@v1
       - name: Checkout repository
         uses: actions/checkout@v2
 
