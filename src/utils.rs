@@ -55,20 +55,30 @@ pub mod regex {
 /// Utils for date types
 pub mod serde_date {
     pub mod ymd_hms_option {
-        use chrono::{DateTime, TimeZone, Utc};
         use serde::{Deserialize, Deserializer, Serializer};
+        use time::{
+            format_description::{self, FormatItem},
+            OffsetDateTime,
+        };
+        use lazy_static::lazy_static;
 
-        const FORMAT: &str = "%Y-%m-%d %H:%M:%S";
+        lazy_static! {
+            static ref FORMAT: Vec<FormatItem<'static>> =
+                format_description::parse_borrowed::<2>("[year]-[month]-[day] [hour]:[minute]:[second]")
+                    .unwrap();
+        }
+
+        // const FORMAT: &str = "%Y-%m-%d %H:%M:%S";
 
         /// # Errors
         /// Infallible, depending on the type of `date` is provided
-        pub fn serialize<S>(date: &Option<DateTime<Utc>>, serializer: S) -> Result<S::Ok, S::Error>
+        pub fn serialize<S>(date: &Option<OffsetDateTime>, serializer: S) -> Result<S::Ok, S::Error>
         where
             S: Serializer,
         {
             match date {
-                Some(time) => {
-                    let s = format!("{}", time.format(FORMAT));
+                Some(dt) => {
+                    let s = dt.format(&FORMAT).unwrap();
                     serializer.serialize_str(&s)
                 }
                 None => serializer.serialize_none(),
@@ -77,25 +87,25 @@ pub mod serde_date {
 
         /// # Errors
         /// Fails if invalid UTC datetime is provided
-        pub fn deserialize<'de, D>(deserializer: D) -> Result<Option<DateTime<Utc>>, D::Error>
+        pub fn deserialize<'de, D>(deserializer: D) -> Result<Option<OffsetDateTime>, D::Error>
         where
             D: Deserializer<'de>,
         {
             let s = String::deserialize(deserializer)?;
-            Utc.datetime_from_str(&s, FORMAT)
+            OffsetDateTime::parse(&s, &FORMAT)
                 .map(Some)
                 .map_err(serde::de::Error::custom)
         }
     }
 
     pub mod str_time_option {
-        use chrono::{NaiveTime, Timelike};
         use serde::{Deserialize, Deserializer, Serializer};
+        use time::Time;
 
         /// # Errors
         /// Fails when data cant be deserialized to String
         pub fn ser_str_time_opt<S>(
-            opt_time: &Option<NaiveTime>,
+            opt_time: &Option<Time>,
             serializer: S,
         ) -> Result<S::Ok, S::Error>
         where
@@ -118,7 +128,7 @@ pub mod serde_date {
 
         /// # Errors
         /// Fails if date cannot be parsed in this format HHMM
-        pub fn de_str_time_opt_erp<'de, D>(deserializer: D) -> Result<Option<NaiveTime>, D::Error>
+        pub fn de_str_time_opt_erp<'de, D>(deserializer: D) -> Result<Option<Time>, D::Error>
         where
             D: Deserializer<'de>,
         {
@@ -132,13 +142,14 @@ pub mod serde_date {
                 *hr = 0
             }
 
-            let time = NaiveTime::from_hms_opt(*hr, *min, 0);
-            Ok(time)
+            Time::from_hms(*hr, *min, 0)
+                .map(Some)
+                .map_err(serde::de::Error::custom)
         }
 
         /// # Errors
         /// Fails if date cannot be parsed in this format HH:MM
-        pub fn de_str_time_opt_br<'de, D>(deserializer: D) -> Result<Option<NaiveTime>, D::Error>
+        pub fn de_str_time_opt_br<'de, D>(deserializer: D) -> Result<Option<Time>, D::Error>
         where
             D: Deserializer<'de>,
         {
@@ -152,35 +163,43 @@ pub mod serde_date {
                 *hr = 0
             }
 
-            let time = NaiveTime::from_hms_opt(*hr, *min, 0);
-            Ok(time)
+            Time::from_hms(*hr, *min, 0)
+                .map(Some)
+                .map_err(serde::de::Error::custom)
         }
     }
 
     pub mod str_date {
-        use chrono::NaiveDate;
         use serde::{Deserialize, Deserializer, Serializer};
+        use time::{Date, format_description::{FormatItem, self}};
+        use lazy_static::lazy_static;
 
-        const FORMAT: &str = "%Y-%m-%d";
+        
+        lazy_static! {
+            static ref FORMAT: Vec<FormatItem<'static>> =
+                format_description::parse_borrowed::<2>("[year]-[month]-[day]")
+                    .unwrap();
+        }
+        // const FORMAT: &str = "%Y-%m-%d";
 
         /// # Errors
         /// Fails when data cant be deserialized to String
-        pub fn serialize<S>(date: &NaiveDate, serializer: S) -> Result<S::Ok, S::Error>
+        pub fn serialize<S>(date: &Date, serializer: S) -> Result<S::Ok, S::Error>
         where
             S: Serializer,
         {
-            let s = format!("{}", date.format(FORMAT));
+            let s = date.format(&FORMAT).unwrap();
             serializer.serialize_str(&s)
         }
 
         /// # Errors
         /// Fails when date isn't the same format as [`crate::utils::serde_date::str_date::FORMAT`]
-        pub fn deserialize<'de, D>(deserializer: D) -> Result<NaiveDate, D::Error>
+        pub fn deserialize<'de, D>(deserializer: D) -> Result<Date, D::Error>
         where
             D: Deserializer<'de>,
         {
             let s = String::deserialize(deserializer)?;
-            NaiveDate::parse_from_str(&s, FORMAT).map_err(serde::de::Error::custom)
+            Date::parse(&s, &FORMAT).map_err(serde::de::Error::custom)
         }
     }
 }
@@ -295,8 +314,8 @@ pub mod de {
     /// Fails when data cant be deserialized to String. Returns None if data is invalid
     #[cfg(feature = "fastfloat")]
     pub fn from_str_to_coords<'de, D>(deserializer: D) -> Result<Option<Coordinates>, D::Error>
-        where
-            D: Deserializer<'de>,
+    where
+        D: Deserializer<'de>,
     {
         let s = String::deserialize(deserializer)?;
 
@@ -305,8 +324,12 @@ pub mod de {
         }
 
         let caps = CARPARK_COORDS_RE.captures(&s).unwrap();
-        let lat = caps.get(1).map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
-        let long = caps.get(3).map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
+        let lat = caps
+            .get(1)
+            .map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
+        let long = caps
+            .get(3)
+            .map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
 
         Ok(Some(Coordinates::new(lat, long)))
     }
@@ -317,8 +340,8 @@ pub mod de {
     /// Fails when data cant be deserialized to String. Returns None if data is invalid
     #[cfg(feature = "fastfloat")]
     pub fn from_str_loc_to_loc<'de, D>(deserializer: D) -> Result<Option<Location>, D::Error>
-        where
-            D: Deserializer<'de>,
+    where
+        D: Deserializer<'de>,
     {
         let s = String::deserialize(deserializer)?;
 
@@ -327,10 +350,18 @@ pub mod de {
         }
 
         let caps = SPEED_BAND_RE.captures(&s).unwrap();
-        let lat_start = caps.get(1).map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
-        let long_start = caps.get(3).map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
-        let lat_end = caps.get(5).map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
-        let long_end = caps.get(7).map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
+        let lat_start = caps
+            .get(1)
+            .map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
+        let long_start = caps
+            .get(3)
+            .map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
+        let lat_end = caps
+            .get(5)
+            .map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
+        let long_end = caps
+            .get(7)
+            .map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
 
         Ok(Some(Location::new(
             lat_start, long_start, lat_end, long_end,

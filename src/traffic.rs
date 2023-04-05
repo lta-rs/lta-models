@@ -24,6 +24,7 @@ pub mod prelude {
 pub mod erp_rates {
     use core::fmt;
     use serde::{Deserialize, Serialize};
+    use time::{Time, Date};
     use std::fmt::Formatter;
     use std::str::FromStr;
 
@@ -34,7 +35,6 @@ pub mod erp_rates {
             str_time_option::{de_str_time_opt_erp, ser_str_time_opt},
         },
     };
-    use chrono::{NaiveDate, NaiveTime};
 
     #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/ERPRates";
@@ -159,13 +159,13 @@ pub mod erp_rates {
             deserialize_with = "de_str_time_opt_erp",
             serialize_with = "ser_str_time_opt"
         )]
-        pub start_time: Option<NaiveTime>,
+        pub start_time: Option<Time>,
 
         #[serde(
             deserialize_with = "de_str_time_opt_erp",
             serialize_with = "ser_str_time_opt"
         )]
-        pub end_time: Option<NaiveTime>,
+        pub end_time: Option<Time>,
 
         #[serde(alias = "ZoneID")]
         pub zone_id: ZoneId,
@@ -174,7 +174,7 @@ pub mod erp_rates {
         pub charge_amt: f32,
 
         #[serde(with = "str_date")]
-        pub effective_date: NaiveDate,
+        pub effective_date: Date,
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -319,8 +319,8 @@ pub mod est_travel_time {
 }
 
 pub mod faulty_traffic_lights {
-    use chrono::prelude::*;
     use serde::{Deserialize, Serialize};
+    use time::OffsetDateTime;
 
     use crate::utils::serde_date::ymd_hms_option;
 
@@ -348,10 +348,10 @@ pub mod faulty_traffic_lights {
         pub technical_alarm_type: TechnicalAlarmType,
 
         #[serde(with = "ymd_hms_option")]
-        pub start_date: Option<DateTime<Utc>>,
+        pub start_date: Option<OffsetDateTime>,
 
         #[serde(with = "ymd_hms_option")]
-        pub end_date: Option<DateTime<Utc>>,
+        pub end_date: Option<OffsetDateTime>,
 
         pub message: String,
     }
@@ -369,8 +369,8 @@ pub mod faulty_traffic_lights {
 }
 
 pub mod road {
-    use chrono::prelude::*;
     use serde::{Deserialize, Serialize};
+    use time::Date;
 
     use crate::utils::serde_date::str_date;
 
@@ -396,10 +396,10 @@ pub mod road {
         pub event_id: String,
 
         #[serde(with = "str_date")]
-        pub start_date: NaiveDate,
+        pub start_date: Date,
 
         #[serde(with = "str_date")]
-        pub end_date: NaiveDate,
+        pub end_date: Date,
 
         #[serde(alias = "SvcDept")]
         pub service_dept: String,

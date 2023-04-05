@@ -78,7 +78,6 @@ pub mod taxi;
 pub mod traffic;
 pub mod train;
 pub mod utils;
-pub use chrono;
 
 /// Data structures for all data
 pub mod prelude {

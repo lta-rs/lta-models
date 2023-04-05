@@ -2,16 +2,16 @@
 
 pub mod prelude {
     pub use crate::crowd::crowd_density::{
-        CrowdDensityForecastRawResp, CrowdInterval, CrowdLevel, StationCrowdForecast,
-        StationCrowdLevel, StationCrowdLevelRawResp, CrowdDensityForecast
+        CrowdDensityForecast, CrowdDensityForecastRawResp, CrowdInterval, CrowdLevel,
+        StationCrowdForecast, StationCrowdLevel, StationCrowdLevelRawResp,
     };
     pub use crate::crowd::passenger_vol::{Link, PassengerVolRawResp, VolType};
 }
 
 pub mod crowd_density {
     use crate::train::StationCode;
-    use chrono::{DateTime, FixedOffset};
     use serde::{Deserialize, Serialize};
+    use time::{serde::iso8601, OffsetDateTime};
 
     #[deprecated(since = "0.5", note = "Will be removed in future versions")]
     pub const URL_CROWD_DENSITY_RT: &str =
@@ -24,8 +24,14 @@ pub mod crowd_density {
     #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
     #[serde(rename_all(deserialize = "lowercase"))]
     pub enum CrowdLevel {
+        
+        #[serde(alias = "l")]
         Low,
+        
+        #[serde(alias = "h")]
         High,
+        
+        #[serde(alias = "m")]
         Moderate,
 
         #[serde(other)]
@@ -36,8 +42,15 @@ pub mod crowd_density {
     #[serde(rename_all(deserialize = "PascalCase"))]
     pub struct StationCrowdLevel {
         pub station: StationCode,
-        pub start_time: DateTime<FixedOffset>,
-        pub end_time: DateTime<FixedOffset>,
+
+        /// Time in GMT+8
+        #[serde(deserialize_with = "iso8601::deserialize")]
+        pub start_time: OffsetDateTime,
+
+        /// Time in GMT+8
+        #[serde(deserialize_with = "iso8601::deserialize")]
+        pub end_time: OffsetDateTime,
+
         pub crowd_level: CrowdLevel,
     }
 
@@ -49,8 +62,9 @@ pub mod crowd_density {
     #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
     #[serde(rename_all(deserialize = "PascalCase"))]
     pub struct CrowdDensityForecast {
-        #[serde(alias = "Date")]
-        pub datetime: DateTime<FixedOffset>,
+        /// Time in GMT+8
+        #[serde(alias = "Date", deserialize_with = "iso8601::deserialize")]
+        pub datetime: OffsetDateTime,
         pub stations: Vec<StationCrowdForecast>,
     }
 
@@ -69,7 +83,9 @@ pub mod crowd_density {
     #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
     #[serde(rename_all(deserialize = "PascalCase"))]
     pub struct CrowdInterval {
-        pub start: DateTime<FixedOffset>,
+        
+        #[serde(deserialize_with = "iso8601::deserialize")]
+        pub start: OffsetDateTime,
         pub crowd_level: CrowdLevel,
     }
 
