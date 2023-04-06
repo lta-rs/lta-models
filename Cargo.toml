@@ -15,9 +15,8 @@ exclude = [
 [dependencies]
 serde = { version = "1.0.159", features = ["derive"] }
 serde_repr = "0.1.12"
-serde_json = "1.0.95"
 regex = "1.7.3"
-time = { version = "0.3.20", features = ["serde-human-readable"]}
+time = { version = "0.3.20", features = ["serde-human-readable", "macros"]}
 lazy_static = "1.4.0"
 fast-float = { version = "0.2", optional = true }
 
