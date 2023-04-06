@@ -90,11 +90,12 @@ pub mod prelude {
 
 #[cfg(test)]
 mod tests {
-    use crate::{prelude::*, traffic::traffic_flow::TrafficFlowRawResp};
+    use crate::{prelude::*, traffic::traffic_flow::TrafficFlowRawResp, bus_enums::{Operator, BusLoad, BusFeature, BusType}, bus::bus_arrival::NextBus};
     use serde::{Deserialize, Serialize};
+    use time::macros::datetime;
     use std::fmt::Debug;
 
-    fn generate_test<'de, I, S, F>(input_fn: F)
+    fn generate_test<'de, I, S, F>(input_fn: F) -> (String, S)
     where
         F: FnOnce() -> &'de str,
         I: Deserialize<'de> + Into<S>,
@@ -106,11 +107,12 @@ mod tests {
             .unwrap();
         let ser = serde_json::to_string(&de).unwrap();
         println!("{}", ser);
+        (ser, de)
     }
 
     macro_rules! gen_test {
         ($a:ty, $b:ty, $c:expr) => {
-            generate_test::<$a, $b, _>(|| include_str!($c));
+            generate_test::<$a, $b, _>(|| include_str!($c))
         };
     }
 
@@ -125,11 +127,33 @@ mod tests {
 
     #[test]
     fn bus_arrival() {
-        gen_test!(
+        let (_, bus) = gen_test!(
             RawBusArrivalResp,
             BusArrivalResp,
             "../dumped_data/bus_arrival.json"
         );
+        
+        assert_eq!(bus.bus_stop_code, 83139);
+        assert_eq!(bus.services.len(), 3);
+        assert_eq!(bus.services[0].operator, Operator::GAS);
+        assert_eq!(bus.services[1].operator, Operator::SBST);
+        assert_eq!(bus.services[2].operator, Operator::SBST);
+
+        let sample_data = NextBus {
+            origin_code: 77009,
+            dest_code: 77009,
+            est_arrival: datetime!(2023-04-06 14:47:57 +8),
+            lat: 1.314452,
+            long: 103.910009,
+            visit_no: 1,
+            load: BusLoad::SeatsAvailable,
+            feature: Some(BusFeature::WheelChairAccessible),
+            bus_type: BusType::SingleDecker
+        };
+
+        assert_eq!(bus.services[0].next_bus[0], Some(sample_data));
+
+        println!("{}", std::mem::size_of::<NextBus>());
     }
 
     #[test]

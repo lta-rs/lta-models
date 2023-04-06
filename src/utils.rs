@@ -215,7 +215,6 @@ pub mod de {
     use crate::utils::{regex::*, Coordinates, Location};
     use serde::de::{self, Visitor};
     use serde::{Deserialize, Deserializer};
-    use serde_json::Value;
     use std::fmt::Formatter;
 
     /// Error for wrapped data
@@ -239,8 +238,8 @@ pub mod de {
         T: Deserialize<'de>,
         D: Deserializer<'de>,
     {
-        let value: Value = Deserialize::deserialize(deserializer)?;
-        Ok(T::deserialize(value).ok())
+        // let value: Value = Deserialize::deserialize(deserializer)?;
+        Ok(T::deserialize(deserializer).ok())
     }
 
     /// Simple conversion of `Y`,`Yes` and `N`, `No` to boolean
