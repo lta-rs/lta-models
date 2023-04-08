@@ -14,7 +14,7 @@ pub mod taxi_avail {
     use crate::utils::Coordinates;
     use serde::{Deserialize, Serialize};
 
-    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
+    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/Taxi-Availability";
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -51,7 +51,7 @@ pub mod taxi_stands {
     use crate::utils::de::from_str_to_bool;
     use serde::{Deserialize, Serialize};
 
-    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
+    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/TaxiStands";
 
     #[allow(clippy::upper_case_acronyms)]

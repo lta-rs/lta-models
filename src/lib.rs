@@ -153,7 +153,9 @@ mod tests {
 
         assert_eq!(bus.services[0].next_bus[0], Some(sample_data));
 
-        println!("{}", std::mem::size_of::<NextBus>());
+        println!("NextBus: {}", std::mem::size_of::<NextBus>());
+        println!("BusLoad: {}", std::mem::size_of::<BusLoad>());
+        println!("BusFeature: {}", std::mem::size_of::<BusFeature>());
     }
 
     #[test]
