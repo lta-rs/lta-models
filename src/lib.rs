@@ -88,10 +88,15 @@ pub mod prelude {
 
 #[cfg(test)]
 mod tests {
-    use crate::{prelude::*, traffic::traffic_flow::TrafficFlowRawResp, bus_enums::{Operator, BusLoad, BusFeature, BusType}, bus::bus_arrival::NextBus};
+    use crate::{
+        bus::{bus_arrival::NextBus, bus_services::BusFreq},
+        bus_enums::{BusFeature, BusLoad, BusType, Operator},
+        prelude::*,
+        traffic::traffic_flow::TrafficFlowRawResp,
+    };
     use serde::{Deserialize, Serialize};
-    use time::macros::datetime;
     use std::fmt::Debug;
+    use time::macros::datetime;
 
     fn generate_test<'de, I, S, F>(input_fn: F) -> (String, S)
     where
@@ -130,7 +135,7 @@ mod tests {
             BusArrivalResp,
             "../dumped_data/bus_arrival.json"
         );
-        
+
         assert_eq!(bus.bus_stop_code, 83139);
         assert_eq!(bus.services.len(), 3);
         assert_eq!(bus.services[0].operator, Operator::GAS);
@@ -146,7 +151,7 @@ mod tests {
             visit_no: 1,
             load: BusLoad::SeatsAvailable,
             feature: Some(BusFeature::WheelChairAccessible),
-            bus_type: BusType::SingleDecker
+            bus_type: BusType::SingleDecker,
         };
 
         assert_eq!(bus.services[0].next_bus[0], Some(sample_data));
@@ -168,8 +173,12 @@ mod tests {
             Vec<BusService>,
             "../dumped_data/bus_services.json"
         );
-    }
 
+
+        println!("Sz BusService: {}", std::mem::size_of::<BusService>());
+        println!("Sz BusFreq: {}", std::mem::size_of::<BusFreq>());
+    }
+    
     #[test]
     fn bus_stops() {
         gen_test!(BusStopsResp, Vec<BusStop>, "../dumped_data/bus_stops.json");

@@ -119,6 +119,8 @@ pub mod bus_arrival {
 }
 
 pub mod bus_services {
+    use std::num::NonZeroU32;
+
     use crate::bus_enums::{BusCategory, Operator};
     use crate::utils::de::from_str_error_as_none;
     use crate::utils::regex::BUS_FREQ_RE;
@@ -130,21 +132,21 @@ pub mod bus_services {
     /// Both min and max are in terms of minutes
     #[derive(Debug, Clone, PartialEq, Serialize)]
     pub struct BusFreq {
-        pub min: Option<u32>,
-        pub max: Option<u32>,
+        pub min: Option<NonZeroU32>,
+        pub max: Option<NonZeroU32>,
     }
 
     impl BusFreq {
         pub fn new(min: u32, max: u32) -> Self {
             BusFreq {
-                min: Some(min),
-                max: Some(max),
+                min: Some(NonZeroU32::new(min).unwrap()),
+                max: Some(NonZeroU32::new(max).unwrap()),
             }
         }
 
         pub fn no_max(min: u32) -> Self {
             BusFreq {
-                min: Some(min),
+                min: Some(NonZeroU32::new(min).unwrap()),
                 max: None,
             }
         }
@@ -171,15 +173,15 @@ pub mod bus_services {
         pub operator: Operator,
 
         #[serde(alias = "Direction")]
-        pub no_direction: u32,
+        pub no_direction: u8,
 
         pub category: BusCategory,
 
         #[serde(deserialize_with = "from_str_error_as_none")]
-        pub origin_code: Option<u32>,
+        pub origin_code: Option<NonZeroU32>,
 
         #[serde(deserialize_with = "from_str_error_as_none", alias = "DestinationCode")]
-        pub dest_code: Option<u32>,
+        pub dest_code: Option<NonZeroU32>,
 
         #[serde(alias = "AM_Peak_Freq", deserialize_with = "from_str_to_bus_freq")]
         pub am_peak_freq: BusFreq,
@@ -193,7 +195,7 @@ pub mod bus_services {
         #[serde(alias = "PM_Offpeak_Freq", deserialize_with = "from_str_to_bus_freq")]
         pub pm_offpeak_freq: BusFreq,
 
-        pub loop_desc: Option<String>,
+        pub loop_desc: String,
     }
 
     fn from_str_to_bus_freq<'de, D>(deserializer: D) -> Result<BusFreq, D::Error>
