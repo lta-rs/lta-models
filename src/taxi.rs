@@ -19,9 +19,12 @@ pub mod taxi_avail {
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct InternalCoordinates {
+
+        /// Original data already float
         #[serde(alias = "Longitude")]
         pub long: f64,
 
+        /// Original data already float
         #[serde(alias = "Latitude")]
         pub lat: f64,
     }
@@ -82,9 +85,11 @@ pub mod taxi_stands {
     pub struct TaxiStand {
         pub taxi_code: String,
 
+        /// Original data already float
         #[serde(alias = "Latitude")]
         pub lat: f64,
 
+        /// Original data already float
         #[serde(alias = "Longitude")]
         pub long: f64,
 

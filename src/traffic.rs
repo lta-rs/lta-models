@@ -527,6 +527,9 @@ pub mod traffic_speed_bands {
     use serde::{Deserialize, Serialize};
 
     use crate::utils::de::from_str;
+    
+    #[cfg(feature = "fastfloat")]
+    use crate::utils::de::from_str_fast_float;
 
     #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/TrafficSpeedBandsv2";
@@ -575,17 +578,21 @@ pub mod traffic_speed_bands {
 
         #[serde(alias = "MaximumSpeed", deserialize_with = "from_str")]
         pub max_speed: u32,
-
-        #[serde(deserialize_with = "from_str")]
+        
+        #[cfg_attr(not(feature = "fastfloat"), serde(deserialize_with = "from_str"))]
+        #[cfg_attr(feature = "fastfloat", serde(deserialize_with = "from_str_fast_float"))]
         pub start_lon: f64,
 
-        #[serde(deserialize_with = "from_str")]
+        #[cfg_attr(not(feature = "fastfloat"), serde(deserialize_with = "from_str"))]
+        #[cfg_attr(feature = "fastfloat", serde(deserialize_with = "from_str_fast_float"))]
         pub start_lat: f64,
 
-        #[serde(deserialize_with = "from_str")]    
+        #[cfg_attr(not(feature = "fastfloat"), serde(deserialize_with = "from_str"))]
+        #[cfg_attr(feature = "fastfloat", serde(deserialize_with = "from_str_fast_float"))]
         pub end_lon: f64,
 
-        #[serde(deserialize_with = "from_str")]
+        #[cfg_attr(not(feature = "fastfloat"), serde(deserialize_with = "from_str"))]
+        #[cfg_attr(feature = "fastfloat", serde(deserialize_with = "from_str_fast_float"))]
         pub end_lat: f64
     }
 

@@ -11,7 +11,7 @@ pub mod prelude {
 
 pub mod bus_arrival {
     use serde::{Deserialize, Serialize};
-    use time::{OffsetDateTime, serde::iso8601};
+    use time::{serde::iso8601, OffsetDateTime};
 
     use crate::bus_enums::{BusFeature, BusLoad, BusType, Operator};
     use crate::utils::de::{from_str, treat_error_as_none};
@@ -67,25 +67,19 @@ pub mod bus_arrival {
 
         #[serde(deserialize_with = "from_str", alias = "DestinationCode")]
         pub dest_code: u32,
-        
+
         /// Time in GMT+8
         #[serde(alias = "EstimatedArrival", deserialize_with = "iso8601::deserialize")]
         pub est_arrival: OffsetDateTime,
 
-        #[cfg(feature = "fastfloat")]
-        #[serde(deserialize_with = "from_str_fast_float", alias = "Latitude")]
+        #[serde(alias = "Latitude")]
+        #[cfg_attr(not(feature = "fastfloat"), serde(deserialize_with = "from_str"))]
+        #[cfg_attr(feature = "fastfloat", serde(deserialize_with = "from_str_fast_float"))]
         pub lat: f64,
 
-        #[cfg(feature = "fastfloat")]
-        #[serde(deserialize_with = "from_str_fast_float", alias = "Longitude")]
-        pub long: f64,
-
-        #[cfg(not(feature = "fastfloat"))]
-        #[serde(deserialize_with = "from_str", alias = "Latitude")]
-        pub lat: f64,
-
-        #[cfg(not(feature = "fastfloat"))]
-        #[serde(deserialize_with = "from_str", alias = "Longitude")]
+        #[serde(alias = "Longitude")]
+        #[cfg_attr(not(feature = "fastfloat"), serde(deserialize_with = "from_str"))]
+        #[cfg_attr(feature = "fastfloat", serde(deserialize_with = "from_str_fast_float"))]
         pub long: f64,
 
         #[serde(deserialize_with = "from_str", alias = "VisitNumber")]
@@ -129,7 +123,7 @@ pub mod bus_services {
     use crate::utils::de::from_str_error_as_none;
     use crate::utils::regex::BUS_FREQ_RE;
     use serde::{Deserialize, Deserializer, Serialize};
-    
+
     #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BusServices";
 
