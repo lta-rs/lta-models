@@ -83,11 +83,11 @@ pub mod bus_arrival {
         pub long: f64,
 
         #[serde(deserialize_with = "from_str", alias = "VisitNumber")]
-        pub visit_no: u32,
+        pub visit_no: u8,
 
         pub load: BusLoad,
 
-        pub feature: Option<BusFeature>,
+        pub feature: BusFeature,
 
         #[serde(alias = "Type")]
         pub bus_type: BusType,

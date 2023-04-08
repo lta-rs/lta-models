@@ -96,7 +96,7 @@ mod tests {
     };
     use serde::{Deserialize, Serialize};
     use std::fmt::Debug;
-    use time::macros::datetime;
+    use time::{macros::datetime, OffsetDateTime};
 
     fn generate_test<'de, I, S, F>(input_fn: F) -> (String, S)
     where
@@ -150,7 +150,7 @@ mod tests {
             long: 103.910009,
             visit_no: 1,
             load: BusLoad::SeatsAvailable,
-            feature: Some(BusFeature::WheelChairAccessible),
+            feature: BusFeature::WheelChairAccessible,
             bus_type: BusType::SingleDecker,
         };
 
@@ -159,6 +159,7 @@ mod tests {
         println!("NextBus: {}", std::mem::size_of::<NextBus>());
         println!("BusLoad: {}", std::mem::size_of::<BusLoad>());
         println!("BusFeature: {}", std::mem::size_of::<BusFeature>());
+        println!("OffsetDateTime: {}", std::mem::size_of::<OffsetDateTime>());
     }
 
     #[test]
