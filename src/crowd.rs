@@ -96,8 +96,8 @@ pub mod crowd_density {
     }
 
     impl From<CrowdDensityForecastRawResp> for CrowdDensityForecast {
-        fn from(mut data: CrowdDensityForecastRawResp) -> Self {
-            data.value.pop().unwrap()
+        fn from(data: CrowdDensityForecastRawResp) -> Self {
+            data.value[0].clone()
         }
     }
 }
