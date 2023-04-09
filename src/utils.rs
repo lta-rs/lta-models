@@ -261,7 +261,6 @@ pub mod de {
     /// structure.
     /// # Errors
     /// Fails when data cant be deserialized to String. Returns None if data is invalid
-    #[cfg(not(feature = "fastfloat"))]
     pub fn from_str_to_coords<'de, D>(deserializer: D) -> Result<Option<Coordinates>, D::Error>
     where
         D: Deserializer<'de>,

@@ -218,7 +218,7 @@ pub mod erp_rates {
 
 pub mod carpark_avail {
     use serde::{Deserialize, Serialize};
-
+    
     use crate::utils::de::from_str_to_coords;
     use crate::utils::Coordinates;
 

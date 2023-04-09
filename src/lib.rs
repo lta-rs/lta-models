@@ -437,7 +437,6 @@ mod tests {
 
     #[test]
     fn geospatial_whole_island() {
-        // not in snake_case
         gen_test!(
             GeospatialWholeIslandRawResp,
             Vec<String>,
@@ -447,7 +446,6 @@ mod tests {
 
     #[test]
     fn traffic_flow() {
-        // not in snake_case
         gen_test!(
             TrafficFlowRawResp,
             Vec<String>,
@@ -457,7 +455,6 @@ mod tests {
 
     #[test]
     fn traffic_images() {
-        // not in snake_case
         gen_test!(
             TrafficImageResp,
             Vec<TrafficImage>,
@@ -467,7 +464,6 @@ mod tests {
 
     #[test]
     fn traffic_incidents() {
-        // not in snake_case
         gen_test!(
             TrafficIncidentResp,
             Vec<TrafficIncident>,
@@ -477,7 +473,6 @@ mod tests {
 
     #[test]
     fn facilities_maintenance() {
-        // not in snake_case
         gen_test!(
             FacilityMaintenanceRawResp,
             Vec<String>,
