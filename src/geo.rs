@@ -13,7 +13,7 @@ pub mod geospatial_whole_island {
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-    #[serde(rename_all(deserialize = "PascalCase"))]
+    #[serde(rename_all = "PascalCase")]
     pub struct GeospatialLink {
         pub link: String,
     }

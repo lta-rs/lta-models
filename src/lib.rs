@@ -2,7 +2,6 @@
 
 // Forbid warnings in release builds:
 #![cfg_attr(not(debug_assertions), deny(warnings))]
-#![forbid(unsafe_code)]
 #![warn(
     clippy::all,
     clippy::await_holding_lock,
@@ -80,37 +79,41 @@ pub mod utils;
 /// Data structures for all data
 pub mod prelude {
     pub use {
-        crate::bus::prelude::*, crate::crowd::prelude::*, crate::facility::prelude::*,
-        crate::geo::prelude::*, crate::taxi::prelude::*, crate::traffic::prelude::*,
-        crate::train::prelude::*,
+        crate::bus::prelude::*, crate::bus_enums::prelude::*, crate::crowd::prelude::*,
+        crate::facility::prelude::*, crate::geo::prelude::*, crate::taxi::prelude::*,
+        crate::traffic::prelude::*, crate::train::prelude::*,
     };
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::{
-        bus::{bus_arrival::NextBus, bus_services::BusFreq},
-        bus_enums::{BusFeature, BusLoad, BusType, Operator},
-        prelude::*,
-        traffic::traffic_flow::TrafficFlowRawResp,
-    };
-    use serde::{Deserialize, Serialize};
+    use crate::prelude::*;
+    use serde::{de::DeserializeOwned, Deserialize, Serialize};
     use std::fmt::Debug;
     use time::{macros::datetime, OffsetDateTime};
 
-    fn generate_test<'de, I, S, F>(input_fn: F) -> (String, S)
+    fn generate_test<'de, I, S, F>(input_fn: F) -> (String, Vec<u8>, S, S)
     where
         F: FnOnce() -> &'de str,
         I: Deserialize<'de> + Into<S>,
-        S: Serialize + Debug,
+        S: DeserializeOwned + Serialize + Debug,
     {
         let data = input_fn();
-        let de: S = serde_json::from_str::<I>(data)
-            .map(|f: I| f.into())
-            .unwrap();
-        let ser = serde_json::to_string(&de).unwrap();
-        println!("{}", ser);
-        (ser, de)
+        let de: S = serde_json::from_str::<I>(data).map(|f| f.into()).unwrap();
+        let ser_json = serde_json::to_string(&de).unwrap();
+
+        // round trip check
+        let de_2 = serde_json::from_str::<S>(&ser_json).unwrap();
+
+        let ser_json_new = serde_json::to_string(&de_2).unwrap();
+        let ser_bincode = bincode::serialize(&de).unwrap();
+
+        println!("{}", ser_json_new);
+        // println!("{:X?}", ser_bincode);
+
+        let de_bincode = bincode::deserialize::<S>(&ser_bincode[..]).unwrap();
+
+        (ser_json_new, ser_bincode, de, de_bincode)
     }
 
     macro_rules! gen_test {
@@ -129,8 +132,118 @@ mod tests {
     }
 
     #[test]
+    fn test_bincode() {
+        #[derive(Debug, PartialEq, Serialize, Deserialize)]
+        #[serde(rename_all = "PascalCase")]
+        struct LelRaw {
+            inner: Inner,
+            str_bool: String,
+        }
+
+        #[derive(Debug, PartialEq, Serialize, Deserialize)]
+        #[serde(rename_all = "PascalCase")]
+        struct Lel {
+            inner: Inner,
+            str_bool: bool,
+        }
+
+        #[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
+        enum Inner {
+            #[serde(rename = "x")]
+            A,
+
+            #[serde(rename = "y")]
+            B,
+
+            #[serde(rename = "z")]
+            C,
+
+            #[serde(other)]
+            Unknown,
+        }
+
+        let json = r#"{"Inner":"x","StrBool":"Y"}"#;
+        let lel_raw = serde_json::from_str::<LelRaw>(json).unwrap();
+        let lel_str = serde_json::to_string(&lel_raw).unwrap();
+        assert_eq!(json, lel_str.as_str());
+
+        let str_bool = lel_raw.str_bool == "Y";
+
+        let lel = Lel {
+            inner: lel_raw.inner.clone(),
+            str_bool,
+        };
+
+        let bc_buf = bincode::serialize(&lel_raw).unwrap();
+        let lel2 = bincode::deserialize::<Lel>(&bc_buf[..]).unwrap();
+        assert_eq!(lel, lel2);
+    }
+
+    #[test]
+    fn test_bc_nextbus() {
+        let sample_data = NextBus {
+            origin_code: 77009,
+            dest_code: 77009,
+            est_arrival: datetime!(2023-04-06 14:47:57 +8),
+            lat: 1.314452,
+            long: 103.910009,
+            visit_no: 1,
+            load: BusLoad::SeatsAvailable,
+            feature: BusFeature::WheelChairAccessible,
+            bus_type: BusType::SingleDecker,
+        };
+
+        let ser = bincode::serialize(&sample_data).unwrap();
+        let de = bincode::deserialize::<NextBus>(&ser[..]).unwrap();
+        assert_eq!(de, sample_data);
+    }
+
+    #[test]
+    fn test_bc_datetime() {
+        use time::serde::iso8601;
+
+        #[derive(Debug, PartialEq, Eq, Serialize, Deserialize)]
+        pub struct Dt {
+            #[serde(
+                rename = "EstimatedArrival",
+                deserialize_with = "iso8601::deserialize",
+                serialize_with = "iso8601::serialize"
+            )]
+            inner: OffsetDateTime,
+        }
+
+        let dt = Dt {
+            inner: datetime!(2023-04-06 14:47:57 +8),
+        };
+
+        let ser = bincode::serialize(&dt).unwrap();
+        let de = bincode::deserialize::<Dt>(&ser[..]).unwrap();
+        assert_eq!(de, dt);
+    }
+
+    #[test]
+    fn test_json_datetime() {
+        use time::serde::timestamp;
+
+        #[derive(Debug, PartialEq, Eq, Serialize, Deserialize)]
+        pub struct Dt {
+            #[serde(rename = "EstimatedArrival", with = "timestamp")]
+            inner: OffsetDateTime,
+        }
+
+        let dt = Dt {
+            inner: datetime!(2023-04-06 14:47:57 +8),
+        };
+
+        let ser = serde_json::to_string(&dt).unwrap();
+        println!("{}", ser);
+        let de = serde_json::from_str::<Dt>(&ser).unwrap();
+        assert_eq!(de, dt);
+    }
+
+    #[test]
     fn bus_arrival() {
-        let (_, bus) = gen_test!(
+        let (_, _, bus, bus_bincode) = gen_test!(
             RawBusArrivalResp,
             BusArrivalResp,
             "../dumped_data/bus_arrival.json"
@@ -138,9 +251,9 @@ mod tests {
 
         assert_eq!(bus.bus_stop_code, 83139);
         assert_eq!(bus.services.len(), 3);
-        assert_eq!(bus.services[0].operator, Operator::GAS);
-        assert_eq!(bus.services[1].operator, Operator::SBST);
-        assert_eq!(bus.services[2].operator, Operator::SBST);
+        assert_eq!(bus.services[0].operator, Operator::Gas);
+        assert_eq!(bus.services[1].operator, Operator::Sbst);
+        assert_eq!(bus.services[2].operator, Operator::Sbst);
 
         let sample_data = NextBus {
             origin_code: 77009,
@@ -155,7 +268,7 @@ mod tests {
         };
 
         assert_eq!(bus.services[0].next_bus[0], Some(sample_data));
-
+        assert_eq!(bus, bus_bincode);
         println!("NextBus: {}", std::mem::size_of::<NextBus>());
         println!("BusLoad: {}", std::mem::size_of::<BusLoad>());
         println!("BusFeature: {}", std::mem::size_of::<BusFeature>());
@@ -175,11 +288,10 @@ mod tests {
             "../dumped_data/bus_services.json"
         );
 
-
         println!("Sz BusService: {}", std::mem::size_of::<BusService>());
         println!("Sz BusFreq: {}", std::mem::size_of::<BusFreq>());
     }
-    
+
     #[test]
     fn bus_stops() {
         gen_test!(BusStopsResp, Vec<BusStop>, "../dumped_data/bus_stops.json");
@@ -305,6 +417,7 @@ mod tests {
 
     #[test]
     fn crowd_density_forecast() {
+        // not in snake_case
         gen_test!(
             CrowdDensityForecastRawResp,
             CrowdDensityForecast,
@@ -314,6 +427,7 @@ mod tests {
 
     #[test]
     fn road_works() {
+        // not in snake case
         gen_test!(
             RoadDetailsResp,
             Vec<RoadDetails>,
@@ -323,6 +437,7 @@ mod tests {
 
     #[test]
     fn geospatial_whole_island() {
+        // not in snake_case
         gen_test!(
             GeospatialWholeIslandRawResp,
             Vec<String>,
@@ -332,6 +447,7 @@ mod tests {
 
     #[test]
     fn traffic_flow() {
+        // not in snake_case
         gen_test!(
             TrafficFlowRawResp,
             Vec<String>,
@@ -341,6 +457,7 @@ mod tests {
 
     #[test]
     fn traffic_images() {
+        // not in snake_case
         gen_test!(
             TrafficImageResp,
             Vec<TrafficImage>,
@@ -350,6 +467,7 @@ mod tests {
 
     #[test]
     fn traffic_incidents() {
+        // not in snake_case
         gen_test!(
             TrafficIncidentResp,
             Vec<TrafficIncident>,
@@ -359,6 +477,7 @@ mod tests {
 
     #[test]
     fn facilities_maintenance() {
+        // not in snake_case
         gen_test!(
             FacilityMaintenanceRawResp,
             Vec<String>,

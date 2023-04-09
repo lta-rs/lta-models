@@ -1,8 +1,8 @@
 //! Utilities for lta-rs
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 /// Coordinate on the map
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Coordinates {
     pub lat: f64,
     pub long: f64,
@@ -15,7 +15,7 @@ impl Coordinates {
 }
 
 /// Starting and ending location
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Location {
     pub start: Coordinates,
     pub end: Coordinates,
@@ -55,20 +55,19 @@ pub mod regex {
 /// Utils for date types
 pub mod serde_date {
     pub mod ymd_hms_option {
+        use lazy_static::lazy_static;
         use serde::{Deserialize, Deserializer, Serializer};
         use time::{
             format_description::{self, FormatItem},
             OffsetDateTime,
         };
-        use lazy_static::lazy_static;
 
         lazy_static! {
-            static ref FORMAT: Vec<FormatItem<'static>> =
-                format_description::parse_borrowed::<2>("[year]-[month]-[day] [hour]:[minute]:[second]")
-                    .unwrap();
+            static ref FORMAT: Vec<FormatItem<'static>> = format_description::parse_borrowed::<2>(
+                "[year]-[month]-[day] [hour]:[minute]:[second]"
+            )
+            .unwrap();
         }
-
-        // const FORMAT: &str = "%Y-%m-%d %H:%M:%S";
 
         /// # Errors
         /// Infallible, depending on the type of `date` is provided
@@ -170,17 +169,17 @@ pub mod serde_date {
     }
 
     pub mod str_date {
-        use serde::{Deserialize, Deserializer, Serializer};
-        use time::{Date, format_description::{FormatItem, self}};
         use lazy_static::lazy_static;
+        use serde::{Deserialize, Deserializer, Serializer};
+        use time::{
+            format_description::{self, FormatItem},
+            Date,
+        };
 
-        
         lazy_static! {
             static ref FORMAT: Vec<FormatItem<'static>> =
-                format_description::parse_borrowed::<2>("[year]-[month]-[day]")
-                    .unwrap();
+                format_description::parse_borrowed::<2>("[year]-[month]-[day]").unwrap();
         }
-        // const FORMAT: &str = "%Y-%m-%d";
 
         /// # Errors
         /// Fails when data cant be deserialized to String
@@ -298,69 +297,6 @@ pub mod de {
         let long_start = caps.get(3).map_or(0.0, |m| m.as_str().parse().unwrap());
         let lat_end = caps.get(5).map_or(0.0, |m| m.as_str().parse().unwrap());
         let long_end = caps.get(7).map_or(0.0, |m| m.as_str().parse().unwrap());
-
-        Ok(Some(Location::new(
-            lat_start, long_start, lat_end, long_end,
-        )))
-    }
-
-    /// Uses fast-float crate to deserialise float string instead of using
-    /// the standard library's `FromStr`.
-    /// To be used when coordinates are space separated
-    /// in a string and you would like to convert them to a Coordinates
-    /// structure.
-    /// # Errors
-    /// Fails when data cant be deserialized to String. Returns None if data is invalid
-    #[cfg(feature = "fastfloat")]
-    pub fn from_str_to_coords<'de, D>(deserializer: D) -> Result<Option<Coordinates>, D::Error>
-    where
-        D: Deserializer<'de>,
-    {
-        let s = String::deserialize(deserializer)?;
-
-        if s.is_empty() || !CARPARK_COORDS_RE.is_match(s.as_str()) {
-            return Ok(None);
-        }
-
-        let caps = CARPARK_COORDS_RE.captures(&s).unwrap();
-        let lat = caps
-            .get(1)
-            .map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
-        let long = caps
-            .get(3)
-            .map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
-
-        Ok(Some(Coordinates::new(lat, long)))
-    }
-
-    /// Uses fast-float crate to deserialise float string instead of using
-    /// the standard library's `FromStr`.
-    /// # Errors
-    /// Fails when data cant be deserialized to String. Returns None if data is invalid
-    #[cfg(feature = "fastfloat")]
-    pub fn from_str_loc_to_loc<'de, D>(deserializer: D) -> Result<Option<Location>, D::Error>
-    where
-        D: Deserializer<'de>,
-    {
-        let s = String::deserialize(deserializer)?;
-
-        if s.is_empty() || !SPEED_BAND_RE.is_match(s.as_str()) {
-            return Ok(None);
-        }
-
-        let caps = SPEED_BAND_RE.captures(&s).unwrap();
-        let lat_start = caps
-            .get(1)
-            .map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
-        let long_start = caps
-            .get(3)
-            .map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
-        let lat_end = caps
-            .get(5)
-            .map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
-        let long_end = caps
-            .get(7)
-            .map_or(0.0, |m| fast_float::parse(m.as_str()).unwrap());
 
         Ok(Some(Location::new(
             lat_start, long_start, lat_end, long_end,

@@ -13,7 +13,7 @@ pub mod facilities_maintenance {
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-    #[serde(rename_all(deserialize = "PascalCase"))]
+    #[serde(rename_all = "PascalCase")]
     pub struct FacilityLink {
         pub link: String,
     }

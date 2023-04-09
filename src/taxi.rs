@@ -19,7 +19,6 @@ pub mod taxi_avail {
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct InternalCoordinates {
-
         /// Original data already float
         #[serde(alias = "Longitude")]
         pub long: f64,
@@ -57,11 +56,14 @@ pub mod taxi_stands {
     #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
     pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/TaxiStands";
 
-    #[allow(clippy::upper_case_acronyms)]
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub enum TaxiStandOwner {
-        LTA,
-        CCS,
+        #[serde(rename = "LTA")]
+        Lta,
+
+        #[serde(rename = "CCS")]
+        Ccs,
+
         Private,
 
         #[serde(other)]
@@ -81,8 +83,8 @@ pub mod taxi_stands {
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-    #[serde(rename_all(deserialize = "PascalCase"))]
-    pub struct TaxiStand {
+    #[serde(rename_all = "PascalCase")]
+    pub struct TaxiStandRaw {
         pub taxi_code: String,
 
         /// Original data already float
@@ -105,13 +107,40 @@ pub mod taxi_stands {
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    pub struct TaxiStand {
+        pub taxi_code: String,
+        pub lat: f64,
+        pub long: f64,
+        pub is_barrier_free: bool,
+        pub owner: TaxiStandOwner,
+        pub stand_type: TaxiStandType,
+        pub name: String,
+    }
+
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct TaxiStandsResp {
-        value: Vec<TaxiStand>,
+        value: Vec<TaxiStandRaw>,
+    }
+
+    impl From<TaxiStandRaw> for TaxiStand {
+
+        #[inline(always)]
+        fn from(r: TaxiStandRaw) -> Self {
+            Self {
+                taxi_code: r.taxi_code,
+                lat: r.lat,
+                long: r.long,
+                is_barrier_free: r.is_barrier_free,
+                owner: r.owner,
+                stand_type: r.stand_type,
+                name: r.name
+            }
+        }
     }
 
     impl From<TaxiStandsResp> for Vec<TaxiStand> {
         fn from(data: TaxiStandsResp) -> Self {
-            data.value
+            data.value.into_iter().map(Into::into).collect()
         }
     }
 }
