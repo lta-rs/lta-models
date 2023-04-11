@@ -211,7 +211,11 @@ pub mod de {
     use std::marker::PhantomData as Phantom;
     use std::str::FromStr;
 
-    use crate::utils::{regex::*, Coordinates, Location};
+    use crate::utils::{regex::*, Coordinates};
+
+    #[cfg(not(feature = "fastfloat"))]
+    use crate::utils::Location;
+
     use serde::de::{self, Visitor};
     use serde::{Deserialize, Deserializer};
     use std::fmt::Formatter;
