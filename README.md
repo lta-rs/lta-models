@@ -23,7 +23,7 @@ This repository contains the data structures required to interact with LTA's dat
 ## `Cargo.toml` setup
 ```toml
 # extra features available: fastfloat
-lta-models = { version = "0.5.0" }
+lta-models = { version = "0.6.0" }
 ```
 
 ## Performance & `fast-float` implementation
