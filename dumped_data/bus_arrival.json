@@ -41,7 +41,7 @@
       },
       {
           "ServiceNo": "154",
-          "Operator": "SBST",
+          "Operator": "GAS",
           "NextBus": {
               "OriginCode": "82009",
               "DestinationCode": "22009",

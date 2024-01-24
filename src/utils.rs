@@ -218,6 +218,7 @@ pub mod de {
 
     use serde::de::{self, Visitor};
     use serde::{Deserialize, Deserializer};
+    use serde_json::Value;
     use std::fmt::Formatter;
 
     /// Error for wrapped data
@@ -234,15 +235,13 @@ pub mod de {
         }
     }
 
-    /// # Errors
-    /// Fails when data cant be deserialized to String. Returns None if data is invalid
     pub fn treat_error_as_none<'de, T, D>(deserializer: D) -> Result<Option<T>, D::Error>
     where
         T: Deserialize<'de>,
         D: Deserializer<'de>,
     {
-        // let value: Value = Deserialize::deserialize(deserializer)?;
-        Ok(T::deserialize(deserializer).ok())
+        let value: Value = Deserialize::deserialize(deserializer)?;
+        Ok(T::deserialize(value).ok())
     }
 
     /// Simple conversion of `Y`,`Yes` and `N`, `No` to boolean

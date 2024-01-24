@@ -92,7 +92,17 @@ mod tests {
     use std::fmt::Debug;
     use time::{macros::datetime, OffsetDateTime};
 
-    fn generate_test<'de, I, S, F>(input_fn: F) -> (String, Vec<u8>, S, S)
+    #[allow(unused)]
+    struct TestItems<T> {
+        serde_json: String,
+        serde_bincode: Vec<u8>,
+        serde_messagepack: Vec<u8>,
+        serde_struct: T,
+        serde_bincode_struct: T,
+        serde_messagepack_struct: T,
+    }
+
+    fn generate_test<'de, I, S, F>(input_fn: F) -> TestItems<S>
     where
         F: FnOnce() -> &'de str,
         I: Deserialize<'de> + Into<S>,
@@ -107,13 +117,22 @@ mod tests {
 
         let ser_json_new = serde_json::to_string(&de_2).unwrap();
         let ser_bincode = bincode::serialize(&de).unwrap();
+        let ser_messagepack = rmp_serde::to_vec(&de).unwrap();
 
         println!("{}", ser_json_new);
         // println!("{:X?}", ser_bincode);
 
         let de_bincode = bincode::deserialize::<S>(&ser_bincode[..]).unwrap();
+        let de_messagepack = rmp_serde::from_slice::<S>(&ser_messagepack[..]).unwrap();
 
-        (ser_json_new, ser_bincode, de, de_bincode)
+        TestItems {
+            serde_json: ser_json_new,
+            serde_bincode: ser_bincode,
+            serde_messagepack: ser_messagepack,
+            serde_struct: de,
+            serde_bincode_struct: de_bincode,
+            serde_messagepack_struct: de_messagepack,
+        }
     }
 
     macro_rules! gen_test {
@@ -199,6 +218,48 @@ mod tests {
     }
 
     #[test]
+    fn test_messagepack_nextbus() {
+        let sample_data = NextBus {
+            origin_code: 77009,
+            dest_code: 77009,
+            est_arrival: datetime!(2023-04-06 14:47:57 +8),
+            lat: 1.314452,
+            long: 103.910009,
+            visit_no: 1,
+            load: BusLoad::SeatsAvailable,
+            feature: BusFeature::WheelChairAccessible,
+            bus_type: BusType::SingleDecker,
+        };
+
+        let ser = rmp_serde::to_vec(&sample_data).unwrap();
+        let de = rmp_serde::from_slice::<NextBus>(&ser[..]).unwrap();
+        assert_eq!(de, sample_data);
+    }
+
+    #[test]
+    fn test_message_datetime() {
+        use time::serde::iso8601;
+
+        #[derive(Debug, PartialEq, Eq, Serialize, Deserialize)]
+        pub struct Dt {
+            #[serde(
+                rename = "EstimatedArrival",
+                deserialize_with = "iso8601::deserialize",
+                serialize_with = "iso8601::serialize"
+            )]
+            inner: OffsetDateTime,
+        }
+
+        let dt = Dt {
+            inner: datetime!(2023-04-06 14:47:57 +8),
+        };
+
+        let ser = rmp_serde::to_vec(&dt).unwrap();
+        let de = rmp_serde::from_slice::<Dt>(&ser[..]).unwrap();
+        assert_eq!(de, dt);
+    }
+
+    #[test]
     fn test_bc_datetime() {
         use time::serde::iso8601;
 
@@ -243,24 +304,31 @@ mod tests {
 
     #[test]
     fn bus_arrival() {
-        let (_, _, bus, bus_bincode) = gen_test!(
+        let TestItems {
+            serde_json: _,
+            serde_bincode: _,
+            serde_messagepack: _,
+            serde_struct: bus,
+            serde_bincode_struct: bus_bincode,
+            serde_messagepack_struct: _,
+        } = gen_test!(
             RawBusArrivalResp,
             BusArrivalResp,
             "../dumped_data/bus_arrival.json"
         );
 
-        assert_eq!(bus.bus_stop_code, 83139);
-        assert_eq!(bus.services.len(), 3);
-        assert_eq!(bus.services[0].operator, Operator::Gas);
-        assert_eq!(bus.services[1].operator, Operator::Sbst);
-        assert_eq!(bus.services[2].operator, Operator::Sbst);
+        assert_eq!(bus.bus_stop_code, 82009);
+        assert_eq!(bus.services.len(), 11);
+        assert_eq!(bus.services[0].operator, Operator::Sbst);
+        assert_eq!(bus.services[1].operator, Operator::Gas);
+        assert_eq!(bus.services[5].operator, Operator::Smrt);
 
         let sample_data = NextBus {
-            origin_code: 77009,
-            dest_code: 77009,
-            est_arrival: datetime!(2023-04-06 14:47:57 +8),
-            lat: 1.314452,
-            long: 103.910009,
+            origin_code: 82009,
+            dest_code: 82009,
+            est_arrival: datetime!(2024-01-17 18:00:00 +8),
+            lat: 0.0,
+            long: 0.0,
             visit_no: 1,
             load: BusLoad::SeatsAvailable,
             feature: BusFeature::WheelChairAccessible,
