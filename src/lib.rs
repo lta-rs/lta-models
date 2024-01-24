@@ -97,9 +97,11 @@ mod tests {
         serde_json: String,
         serde_bincode: Vec<u8>,
         serde_messagepack: Vec<u8>,
+        serde_flexbuffer: Vec<u8>,
         serde_struct: T,
         serde_bincode_struct: T,
         serde_messagepack_struct: T,
+        serde_flexbuffer_struct: T,
     }
 
     fn generate_test<'de, I, S, F>(input_fn: F) -> TestItems<S>
@@ -118,20 +120,24 @@ mod tests {
         let ser_json_new = serde_json::to_string(&de_2).unwrap();
         let ser_bincode = bincode::serialize(&de).unwrap();
         let ser_messagepack = rmp_serde::to_vec(&de).unwrap();
+        let ser_flexbuffer = flexbuffers::to_vec(&de).unwrap();
 
         println!("{}", ser_json_new);
         // println!("{:X?}", ser_bincode);
 
         let de_bincode = bincode::deserialize::<S>(&ser_bincode[..]).unwrap();
         let de_messagepack = rmp_serde::from_slice::<S>(&ser_messagepack[..]).unwrap();
+        let de_flexbuffer = flexbuffers::from_slice(&ser_flexbuffer[..]).unwrap();
 
         TestItems {
             serde_json: ser_json_new,
             serde_bincode: ser_bincode,
             serde_messagepack: ser_messagepack,
+            serde_flexbuffer: ser_flexbuffer,
             serde_struct: de,
             serde_bincode_struct: de_bincode,
             serde_messagepack_struct: de_messagepack,
+            serde_flexbuffer_struct: de_flexbuffer,
         }
     }
 
@@ -198,46 +204,64 @@ mod tests {
         assert_eq!(lel, lel2);
     }
 
+    const SAMPLE_DATA: NextBus = NextBus {
+        origin_code: 77009,
+        dest_code: 77009,
+        est_arrival: datetime!(2023-04-06 14:47:57 +8),
+        lat: 1.314452,
+        long: 103.910009,
+        visit_no: 1,
+        load: BusLoad::SeatsAvailable,
+        feature: BusFeature::WheelChairAccessible,
+        bus_type: BusType::SingleDecker,
+    };
+
     #[test]
     fn test_bc_nextbus() {
-        let sample_data = NextBus {
-            origin_code: 77009,
-            dest_code: 77009,
-            est_arrival: datetime!(2023-04-06 14:47:57 +8),
-            lat: 1.314452,
-            long: 103.910009,
-            visit_no: 1,
-            load: BusLoad::SeatsAvailable,
-            feature: BusFeature::WheelChairAccessible,
-            bus_type: BusType::SingleDecker,
-        };
-
-        let ser = bincode::serialize(&sample_data).unwrap();
+        let ser = bincode::serialize(&SAMPLE_DATA).unwrap();
         let de = bincode::deserialize::<NextBus>(&ser[..]).unwrap();
-        assert_eq!(de, sample_data);
+        assert_eq!(de, SAMPLE_DATA);
     }
 
     #[test]
     fn test_messagepack_nextbus() {
-        let sample_data = NextBus {
-            origin_code: 77009,
-            dest_code: 77009,
-            est_arrival: datetime!(2023-04-06 14:47:57 +8),
-            lat: 1.314452,
-            long: 103.910009,
-            visit_no: 1,
-            load: BusLoad::SeatsAvailable,
-            feature: BusFeature::WheelChairAccessible,
-            bus_type: BusType::SingleDecker,
-        };
-
-        let ser = rmp_serde::to_vec(&sample_data).unwrap();
+        let ser = rmp_serde::to_vec(&SAMPLE_DATA).unwrap();
         let de = rmp_serde::from_slice::<NextBus>(&ser[..]).unwrap();
-        assert_eq!(de, sample_data);
+        assert_eq!(de, SAMPLE_DATA);
     }
 
     #[test]
-    fn test_message_datetime() {
+    fn test_flexbuffer_nextbus() {
+        let ser = flexbuffers::to_vec(&SAMPLE_DATA).unwrap();
+        let de = flexbuffers::from_slice::<NextBus>(&ser[..]).unwrap();
+        assert_eq!(de, SAMPLE_DATA);
+    }
+
+    #[test]
+    fn test_flexbuffer_datetime() {
+        use time::serde::iso8601;
+
+        #[derive(Debug, PartialEq, Eq, Serialize, Deserialize)]
+        pub struct Dt {
+            #[serde(
+                rename = "EstimatedArrival",
+                deserialize_with = "iso8601::deserialize",
+                serialize_with = "iso8601::serialize"
+            )]
+            inner: OffsetDateTime,
+        }
+
+        let dt = Dt {
+            inner: datetime!(2023-04-06 14:47:57 +8),
+        };
+
+        let ser = flexbuffers::to_vec(&dt).unwrap();
+        let de = flexbuffers::from_slice::<Dt>(&ser[..]).unwrap();
+        assert_eq!(de, dt);
+    }
+
+    #[test]
+    fn test_messagepack_datetime() {
         use time::serde::iso8601;
 
         #[derive(Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -308,9 +332,11 @@ mod tests {
             serde_json: _,
             serde_bincode: _,
             serde_messagepack: _,
+            serde_flexbuffer: _,
             serde_struct: bus,
             serde_bincode_struct: bus_bincode,
-            serde_messagepack_struct: _,
+            serde_messagepack_struct,
+            serde_flexbuffer_struct,
         } = gen_test!(
             RawBusArrivalResp,
             BusArrivalResp,
@@ -337,6 +363,9 @@ mod tests {
 
         assert_eq!(bus.services[0].next_bus[0], Some(sample_data));
         assert_eq!(bus, bus_bincode);
+        assert_eq!(bus, serde_messagepack_struct);
+        assert_eq!(bus, serde_flexbuffer_struct);
+
         println!("NextBus: {}", std::mem::size_of::<NextBus>());
         println!("BusLoad: {}", std::mem::size_of::<BusLoad>());
         println!("BusFeature: {}", std::mem::size_of::<BusFeature>());
