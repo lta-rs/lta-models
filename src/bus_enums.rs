@@ -21,7 +21,7 @@ pub enum Operator {
     #[serde(rename = "SBST")]
     Sbst,
     
-    #[serde(rename = "SBST")]
+    #[serde(rename = "SMRT")]
     Smrt,
     
     #[serde(rename = "TTS")]
@@ -55,6 +55,12 @@ pub enum BusType {
     Unknown,
 }
 
+impl Default for BusType {
+    fn default() -> Self {
+        BusType::Unknown
+    }
+}
+
 /// SEA -> Seats available
 ///
 /// SDA -> Standing available
@@ -75,6 +81,12 @@ pub enum BusLoad {
     Unknown,
 }
 
+impl Default for BusLoad {
+    fn default() -> Self {
+        BusLoad::Unknown
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize)]
 pub enum BusFeature {
     #[serde(rename = "WAB")]
@@ -82,6 +94,12 @@ pub enum BusFeature {
 
     #[serde(other)]
     Unknown,
+}
+
+impl Default for BusFeature {
+    fn default() -> Self {
+        BusFeature::Unknown
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize)]
