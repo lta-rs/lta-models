@@ -2,7 +2,7 @@
 
 pub mod prelude {
     pub use {
-        crate::bus::bus_arrival::{BusArrivalResp, NextBus, RawBusArrivalResp},
+        crate::bus::bus_arrival::{BusArrivalResp, NextBus, BusArrivalRespRaw},
         crate::bus::bus_routes::{BusRoute, BusRouteResp},
         crate::bus::bus_services::{BusFreq, BusService, BusServiceResp},
         crate::bus::bus_stops::{BusStop, BusStopsResp},
@@ -132,7 +132,7 @@ pub mod bus_arrival {
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     #[serde(rename_all = "PascalCase")]
-    pub struct RawBusArrivalResp {
+    pub struct BusArrivalRespRaw {
         #[serde(deserialize_with = "from_str")]
         pub bus_stop_code: u32,
         pub services: Vec<RawArrivalBusService>,
@@ -144,8 +144,8 @@ pub mod bus_arrival {
         pub services: Vec<ArrivalBusService>,
     }
 
-    impl From<RawBusArrivalResp> for BusArrivalResp {
-        fn from(data: RawBusArrivalResp) -> Self {
+    impl From<BusArrivalRespRaw> for BusArrivalResp {
+        fn from(data: BusArrivalRespRaw) -> Self {
             Self {
                 bus_stop_code: data.bus_stop_code,
                 services: data.services.into_iter().map(|v| v.into()).collect(),

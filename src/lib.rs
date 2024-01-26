@@ -338,7 +338,7 @@ mod tests {
             serde_messagepack_struct,
             serde_flexbuffer_struct,
         } = gen_test!(
-            RawBusArrivalResp,
+            BusArrivalRespRaw,
             BusArrivalResp,
             "../dumped_data/bus_arrival.json"
         );
