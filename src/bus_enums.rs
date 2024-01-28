@@ -2,9 +2,7 @@
 //! Used for transforming stringly typed data from API to enums
 
 pub mod prelude {
-    pub use {
-        crate::bus_enums::{Operator, BusCategory, BusFeature, BusLoad, BusType}
-    };
+    pub use crate::bus_enums::{BusCategory, BusFeature, BusLoad, BusType, Operator};
 }
 
 use serde::{Deserialize, Serialize};
@@ -20,13 +18,13 @@ use serde::{Deserialize, Serialize};
 pub enum Operator {
     #[serde(rename = "SBST")]
     Sbst,
-    
+
     #[serde(rename = "SMRT")]
     Smrt,
-    
+
     #[serde(rename = "TTS")]
     Tts,
-    
+
     #[serde(rename = "GAS")]
     Gas,
 
