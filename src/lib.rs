@@ -1,9 +1,11 @@
 //! Data Structures for lta-rs and for LTA datamall APIs
 
 // Forbid warnings in release builds:
+#![forbid(unsafe_code)]
 #![cfg_attr(not(debug_assertions), deny(warnings))]
 #![warn(
     clippy::all,
+    clippy::linkedlist,
     clippy::await_holding_lock,
     clippy::char_lit_as_u8,
     clippy::checked_conversions,
@@ -26,7 +28,6 @@
     clippy::invalid_upcast_comparisons,
     clippy::large_types_passed_by_value,
     clippy::let_unit_value,
-    clippy::linkedlist,
     clippy::lossy_float_literal,
     clippy::macro_use_imports,
     clippy::manual_ok_or,

@@ -37,7 +37,7 @@ pub enum Operator {
 /// DD -> Double Decker
 ///
 /// BD -> Bendy
-#[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize)]
+#[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize, Default)]
 #[serde(rename_all = "PascalCase")]
 pub enum BusType {
     #[serde(rename = "SD")]
@@ -49,14 +49,9 @@ pub enum BusType {
     #[serde(rename = "BD")]
     Bendy,
 
+    #[default]
     #[serde(other)]
     Unknown,
-}
-
-impl Default for BusType {
-    fn default() -> Self {
-        BusType::Unknown
-    }
 }
 
 /// SEA -> Seats available
@@ -64,7 +59,7 @@ impl Default for BusType {
 /// SDA -> Standing available
 ///
 /// LSD -> Limited standing
-#[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize)]
+#[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize, Default)]
 pub enum BusLoad {
     #[serde(rename = "SEA")]
     SeatsAvailable,
@@ -75,32 +70,24 @@ pub enum BusLoad {
     #[serde(rename = "LSD")]
     LimitedStanding,
 
+    #[default]
     #[serde(other)]
     Unknown,
 }
 
-impl Default for BusLoad {
-    fn default() -> Self {
-        BusLoad::Unknown
-    }
-}
 
-#[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize)]
+#[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize, Default)]
 pub enum BusFeature {
     #[serde(rename = "WAB")]
     WheelChairAccessible,
 
+    #[default]
     #[serde(other)]
     Unknown,
 }
 
-impl Default for BusFeature {
-    fn default() -> Self {
-        BusFeature::Unknown
-    }
-}
 
-#[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize)]
+#[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize, Default)]
 pub enum BusCategory {
     #[serde(alias = "EXPRESS")]
     Express,
@@ -132,6 +119,7 @@ pub enum BusCategory {
     #[serde(alias = "FLAT FARE $2.00")]
     FlatFareTwoDollar,
 
+    #[default]
     #[serde(other)]
     Unknown,
 }

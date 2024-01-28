@@ -234,7 +234,9 @@ pub mod de {
             write!(f, "StringWrapErr")
         }
     }
-
+    
+    /// # Errors
+    /// Fails when data cant be deserialized to String
     pub fn treat_error_as_none<'de, T, D>(deserializer: D) -> Result<Option<T>, D::Error>
     where
         T: Deserialize<'de>,

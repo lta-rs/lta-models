@@ -1,7 +1,7 @@
 [package]
 name = "lta_models"
 version = "0.6.0"
-authors = ["budinverse <me@inve.rs>"]
+authors = ["zeon256 <me@inve.rs>"]
 edition = "2021"
 license = "MIT"
 description = "🚍Models for lta-rs"
