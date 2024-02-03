@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["DayType","VehicleType","ZoneId"],"struct":["ErpRate","ErpRateRaw","ErpRatesResp","VehicleError"]};

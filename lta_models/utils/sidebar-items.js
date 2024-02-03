@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["de","regex","serde_date"],"struct":["Coordinates","Location"]};

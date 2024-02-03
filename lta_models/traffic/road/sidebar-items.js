@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["RoadDetailsType"],"struct":["RoadDetails","RoadDetailsResp"]};

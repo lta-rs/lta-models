@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["geospatial_whole_island","prelude"]};
