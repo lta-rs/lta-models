@@ -12,6 +12,7 @@ pub mod prelude {
             FaultyTrafficLight, FaultyTrafficLightResp, TechnicalAlarmType,
         },
         crate::traffic::road::{RoadDetails, RoadDetailsResp, RoadDetailsType},
+        crate::traffic::traffic_flow::{TrafficFlowLink, TrafficFlowRawResp},
         crate::traffic::traffic_images::{TrafficImage, TrafficImageResp},
         crate::traffic::traffic_incidents::{IncidentType, TrafficIncident, TrafficIncidentResp},
         crate::traffic::traffic_speed_bands::{
@@ -24,9 +25,9 @@ pub mod prelude {
 pub mod erp_rates {
     use core::fmt;
     use serde::{Deserialize, Serialize};
-    use time::{Time, Date};
     use std::fmt::Formatter;
     use std::str::FromStr;
+    use time::{Date, Time};
 
     use crate::utils::{
         de::{delimited, Sep},
@@ -36,10 +37,7 @@ pub mod erp_rates {
         },
     };
 
-    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/ERPRates";
-
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum VehicleType {
         #[serde(alias = "Passenger Cars")]
         PassengerCars,
@@ -62,6 +60,7 @@ pub mod erp_rates {
         #[serde(alias = "Big Buses")]
         BigBuses,
 
+        #[default]
         #[serde(other)]
         Unknown,
     }
@@ -94,14 +93,18 @@ pub mod erp_rates {
         }
     }
 
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum DayType {
         Weekdays,
         Saturday,
+
+        #[default]
+        #[serde(other)]
+        Unknown
     }
 
     #[allow(clippy::upper_case_acronyms)]
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum ZoneId {
         CT2,
         PE4,
@@ -137,6 +140,7 @@ pub mod erp_rates {
         MC1,
         MC2,
 
+        #[default]
         #[serde(other)]
         Unknown,
     }
@@ -148,8 +152,8 @@ pub mod erp_rates {
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-    #[serde(rename_all(deserialize = "PascalCase"))]
-    pub struct ErpRate {
+    #[serde(rename_all = "PascalCase")]
+    pub struct ErpRateRaw {
         #[serde(deserialize_with = "delimited")]
         pub vehicle_type: Vec<VehicleType>,
 
@@ -178,55 +182,81 @@ pub mod erp_rates {
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    pub struct ErpRate {
+        pub vehicle_type: Vec<VehicleType>,
+        pub day_type: DayType,
+        pub start_time: Option<Time>,
+        pub end_time: Option<Time>,
+        pub zone_id: ZoneId,
+        pub charge_amt: f32,
+        pub effective_date: Date,
+    }
+
+    impl From<ErpRateRaw> for ErpRate {
+        #[inline(always)]
+        fn from(r: ErpRateRaw) -> Self {
+            Self {
+                vehicle_type: r.vehicle_type,
+                day_type: r.day_type,
+                start_time: r.start_time,
+                end_time: r.end_time,
+                zone_id: r.zone_id,
+                charge_amt: r.charge_amt,
+                effective_date: r.effective_date,
+            }
+        }
+    }
+
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct ErpRatesResp {
-        pub value: Vec<ErpRate>,
+        pub value: Vec<ErpRateRaw>,
     }
 
     impl From<ErpRatesResp> for Vec<ErpRate> {
         fn from(data: ErpRatesResp) -> Self {
-            data.value
+            data.value.into_iter().map(Into::into).collect()
         }
     }
 }
 
 pub mod carpark_avail {
     use serde::{Deserialize, Serialize};
-
+    
     use crate::utils::de::from_str_to_coords;
     use crate::utils::Coordinates;
 
-    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/CarParkAvailabilityv2";
-
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum LotType {
         C,
         L,
         Y,
         H,
+
+        #[default]
         #[serde(other)]
         Unknown,
     }
 
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     #[allow(clippy::upper_case_acronyms)]
     pub enum Agency {
         HDB,
         URA,
         LTA,
+        #[default]
         #[serde(other)]
         Unknown,
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-    #[serde(rename_all(deserialize = "PascalCase"))]
-    pub struct CarPark {
-        #[serde(alias = "CarParkID")]
+    #[serde(rename_all = "PascalCase")]
+    pub struct CarParkRaw {
+        #[serde(rename = "CarParkID")]
         pub carpark_id: String,
 
         pub area: String,
 
-        #[serde(alias = "Development")]
+        #[serde(rename = "Development")]
         pub dev: String,
 
         #[serde(alias = "Location", deserialize_with = "from_str_to_coords")]
@@ -241,13 +271,39 @@ pub mod carpark_avail {
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    pub struct CarPark {
+        pub carpark_id: String,
+        pub area: String,
+        pub dev: String,
+        pub coords: Option<Coordinates>,
+        pub avail_lots: u32,
+        pub lot_type: LotType,
+        pub agency: Agency,
+    }
+
+    impl From<CarParkRaw> for CarPark {
+        #[inline(always)]
+        fn from(r: CarParkRaw) -> Self {
+            Self {
+                carpark_id: r.carpark_id,
+                area: r.area,
+                dev: r.dev,
+                coords: r.coords,
+                avail_lots: r.avail_lots,
+                lot_type: r.lot_type,
+                agency: r.agency,
+            }
+        }
+    }
+
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct CarparkAvailResp {
-        pub value: Vec<CarPark>,
+        pub value: Vec<CarParkRaw>,
     }
 
     impl From<CarparkAvailResp> for Vec<CarPark> {
         fn from(data: CarparkAvailResp) -> Self {
-            data.value
+            data.value.into_iter().map(Into::into).collect()
         }
     }
 }
@@ -256,11 +312,8 @@ pub mod est_travel_time {
     use serde::{Deserialize, Serialize};
     use serde_repr::*;
 
-    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/EstTravelTimes";
-
     #[allow(clippy::upper_case_acronyms)]
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum Highway {
         PIE,
         AYE,
@@ -273,22 +326,25 @@ pub mod est_travel_time {
         BKE,
         KJE,
         MCE,
+
+        #[default]
         #[serde(other)]
         Unknown,
     }
 
-    #[derive(Debug, Clone, PartialEq, Serialize_repr, Deserialize_repr)]
+    #[derive(Debug, Clone, PartialEq, Serialize_repr, Deserialize_repr, Default)]
     #[repr(u32)]
     pub enum HighwayDirection {
         EastToWest = 1,
         WestToEast = 2,
+        #[default]
         #[serde(other)]
         Unknown,
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-    #[serde(rename_all(deserialize = "PascalCase"))]
-    pub struct EstTravelTime {
+    #[serde(rename_all = "PascalCase")]
+    pub struct EstTravelTimeRaw {
         pub name: Highway,
 
         pub direction: HighwayDirection,
@@ -307,13 +363,36 @@ pub mod est_travel_time {
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    pub struct EstTravelTime {
+        pub name: Highway,
+        pub direction: HighwayDirection,
+        pub far_end_pt: String,
+        pub start_pt: String,
+        pub end_pt: String,
+        pub est_travel_time: u32,
+    }
+
+    impl From<EstTravelTimeRaw> for EstTravelTime {
+        fn from(r: EstTravelTimeRaw) -> Self {
+            Self {
+                name: r.name,
+                direction: r.direction,
+                far_end_pt: r.far_end_pt,
+                start_pt: r.start_pt,
+                end_pt: r.end_pt,
+                est_travel_time: r.est_travel_time
+            }
+        }
+    }
+
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct EstTravelTimeResp {
-        pub value: Vec<EstTravelTime>,
+        pub value: Vec<EstTravelTimeRaw>,
     }
 
     impl From<EstTravelTimeResp> for Vec<EstTravelTime> {
         fn from(data: EstTravelTimeResp) -> Self {
-            data.value
+            data.value.into_iter().map(Into::into).collect()
         }
     }
 }
@@ -324,19 +403,17 @@ pub mod faulty_traffic_lights {
 
     use crate::utils::serde_date::ymd_hms_option;
 
-    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/FaultyTrafficLights";
-
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum TechnicalAlarmType {
         Blackout = 4,
         FlashingYellow = 13,
+        #[default]
         #[serde(other)]
         Unknown,
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-    #[serde(rename_all(deserialize = "PascalCase"))]
+    #[serde(rename_all = "PascalCase")]
     pub struct FaultyTrafficLight {
         #[serde(alias = "AlarmID")]
         pub alarm_id: String,
@@ -374,23 +451,17 @@ pub mod road {
 
     use crate::utils::serde_date::str_date;
 
-    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
-    pub const URL_ROAD_OPENING: &str =
-        "http://datamall2.mytransport.sg/ltaodataservice/RoadOpenings";
-        
-    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
-    pub const URL_ROAD_WORKS: &str = "http://datamall2.mytransport.sg/ltaodataservice/RoadWorks";
-
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum RoadDetailsType {
         RoadOpening,
         RoadWorks,
+        #[default]
         #[serde(other)]
         Unknown,
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-    #[serde(rename_all(deserialize = "PascalCase"))]
+    #[serde(rename_all = "PascalCase")]
     pub struct RoadDetails {
         #[serde(alias = "EventID")]
         pub event_id: String,
@@ -426,11 +497,8 @@ pub mod traffic_images {
 
     use crate::utils::de::from_str;
 
-    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/Traffic-Imagesv2";
-
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-    pub struct TrafficImage {
+    pub struct TrafficImageRaw {
         #[serde(alias = "CameraID", deserialize_with = "from_str")]
         pub camera_id: u32,
 
@@ -445,13 +513,33 @@ pub mod traffic_images {
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    pub struct TrafficImage {
+        pub camera_id: u32,
+        pub lat: f64,
+        pub long: f64,
+        pub image_link: String,
+    }
+
+    impl From<TrafficImageRaw> for TrafficImage {
+        #[inline(always)]
+        fn from(r: TrafficImageRaw) -> Self {
+            Self {
+                camera_id: r.camera_id,
+                lat: r.lat,
+                long: r.long,
+                image_link: r.image_link,
+            }
+        }
+    }
+
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct TrafficImageResp {
-        pub value: Vec<TrafficImage>,
+        pub value: Vec<TrafficImageRaw>,
     }
 
     impl From<TrafficImageResp> for Vec<TrafficImage> {
         fn from(data: TrafficImageResp) -> Self {
-            data.value
+            data.value.into_iter().map(Into::into).collect()
         }
     }
 }
@@ -459,10 +547,7 @@ pub mod traffic_images {
 pub mod traffic_incidents {
     use serde::{Deserialize, Serialize};
 
-    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/TrafficIncidents";
-
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum IncidentType {
         Accident,
 
@@ -492,6 +577,7 @@ pub mod traffic_incidents {
 
         Roadwork,
 
+        #[default]
         #[serde(other)]
         Unknown,
     }
@@ -528,10 +614,10 @@ pub mod traffic_speed_bands {
 
     use crate::utils::de::from_str;
 
-    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/TrafficSpeedBandsv2";
+    #[cfg(feature = "fastfloat")]
+    use crate::utils::de::from_str_fast_float;
 
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum RoadCategory {
         #[serde(alias = "A")]
         Expressway,
@@ -554,13 +640,14 @@ pub mod traffic_speed_bands {
         #[serde(alias = "G")]
         NoCategoryInfoAvail,
 
+        #[default]
         #[serde(other)]
         Unknown,
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-    #[serde(rename_all(deserialize = "PascalCase"))]
-    pub struct TrafficSpeedBand {
+    #[serde(rename_all = "PascalCase")]
+    pub struct TrafficSpeedBandRaw {
         #[serde(alias = "LinkID", deserialize_with = "from_str")]
         pub link_id: u64,
 
@@ -576,36 +663,69 @@ pub mod traffic_speed_bands {
         #[serde(alias = "MaximumSpeed", deserialize_with = "from_str")]
         pub max_speed: u32,
 
-        #[serde(deserialize_with = "from_str")]
+        #[cfg_attr(not(feature = "fastfloat"), serde(deserialize_with = "from_str"))]
+        #[cfg_attr(feature = "fastfloat", serde(deserialize_with = "from_str_fast_float"))]
         pub start_lon: f64,
 
-        #[serde(deserialize_with = "from_str")]
+        #[cfg_attr(not(feature = "fastfloat"), serde(deserialize_with = "from_str"))]
+        #[cfg_attr(feature = "fastfloat", serde(deserialize_with = "from_str_fast_float"))]
         pub start_lat: f64,
 
-        #[serde(deserialize_with = "from_str")]    
+        #[cfg_attr(not(feature = "fastfloat"), serde(deserialize_with = "from_str"))]
+        #[cfg_attr(feature = "fastfloat", serde(deserialize_with = "from_str_fast_float"))]
         pub end_lon: f64,
 
-        #[serde(deserialize_with = "from_str")]
-        pub end_lat: f64
+        #[cfg_attr(not(feature = "fastfloat"), serde(deserialize_with = "from_str"))]
+        #[cfg_attr(feature = "fastfloat", serde(deserialize_with = "from_str_fast_float"))]
+        pub end_lat: f64,
+    }
+
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    pub struct TrafficSpeedBand {
+        pub link_id: u64,
+        pub road_name: String,
+        pub road_category: RoadCategory,
+        pub speed_band: u32,
+        pub min_speed: u32,
+        pub max_speed: u32,
+        pub start_lon: f64,
+        pub start_lat: f64,
+        pub end_lon: f64,
+        pub end_lat: f64,
+    }
+
+    impl From<TrafficSpeedBandRaw> for TrafficSpeedBand {
+        #[inline(always)]
+        fn from(r: TrafficSpeedBandRaw) -> Self {
+            Self {
+                link_id: r.link_id,
+                road_name: r.road_name,
+                road_category: r.road_category,
+                speed_band: r.speed_band,
+                min_speed: r.min_speed,
+                max_speed: r.max_speed,
+                start_lon: r.start_lon,
+                start_lat: r.start_lat,
+                end_lon: r.end_lon,
+                end_lat: r.end_lat,
+            }
+        }
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct TrafficSpeedBandResp {
-        pub value: Vec<TrafficSpeedBand>,
+        pub value: Vec<TrafficSpeedBandRaw>,
     }
 
     impl From<TrafficSpeedBandResp> for Vec<TrafficSpeedBand> {
         fn from(data: TrafficSpeedBandResp) -> Self {
-            data.value
+            data.value.into_iter().map(Into::into).collect()
         }
     }
 }
 
 pub mod vms_emas {
     use serde::{Deserialize, Serialize};
-
-    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/VMS";
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct Vms {
@@ -639,10 +759,7 @@ pub mod bike_parking {
 
     use crate::utils::de::from_str_to_bool;
 
-    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BicycleParkingv2";
-
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum RackType {
         #[serde(alias = "Yellow Box")]
         YellowBox,
@@ -683,20 +800,21 @@ pub mod bike_parking {
         #[serde(alias = "Racks_NEA")]
         RacksNEA,
 
+        #[default]
         #[serde(other)]
         Unknown,
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-    #[serde(rename_all(deserialize = "PascalCase"))]
-    pub struct BikeParking {
-        #[serde(alias = "Description")]
+    #[serde(rename_all = "PascalCase")]
+    pub struct BikeParkingRaw {
+        #[serde(rename = "Description")]
         pub desc: String,
 
-        #[serde(alias = "Latitude")]
+        #[serde(rename = "Latitude")]
         pub lat: f64,
 
-        #[serde(alias = "Longitude")]
+        #[serde(rename = "Longitude")]
         pub long: f64,
 
         pub rack_type: RackType,
@@ -708,13 +826,36 @@ pub mod bike_parking {
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    pub struct BikeParking {
+        pub desc: String,
+        pub lat: f64,
+        pub long: f64,
+        pub rack_type: RackType,
+        pub rack_count: u32,
+        pub shelter_indicator: bool,
+    }
+
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct BikeParkingResp {
-        pub value: Vec<BikeParking>,
+        pub value: Vec<BikeParkingRaw>,
+    }
+
+    impl From<BikeParkingRaw> for BikeParking {
+        fn from(r: BikeParkingRaw) -> Self {
+            Self {
+                desc: r.desc,
+                lat: r.lat,
+                long: r.long,
+                rack_type: r.rack_type,
+                rack_count: r.rack_count,
+                shelter_indicator: r.shelter_indicator,
+            }
+        }
     }
 
     impl From<BikeParkingResp> for Vec<BikeParking> {
         fn from(data: BikeParkingResp) -> Self {
-            data.value
+            data.value.into_iter().map(Into::into).collect()
         }
     }
 }
@@ -722,13 +863,12 @@ pub mod bike_parking {
 pub mod traffic_flow {
     use serde::{Deserialize, Serialize};
 
-    
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-    #[serde(rename_all(deserialize = "PascalCase"))]
+    #[serde(rename_all = "PascalCase")]
     pub struct TrafficFlowLink {
-        link: String
+        link: String,
     }
-    
+
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct TrafficFlowRawResp {
         pub value: Vec<TrafficFlowLink>,

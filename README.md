@@ -15,6 +15,9 @@
   <a href="https://crates.io/crates/lta_models">
     <img src="https://img.shields.io/crates/v/lta-models"/>
   </a>
+  <a href="https://crates.io/crates/lta_models">
+    <img src="https://img.shields.io/badge/forbid_unsafe-yes-blue"/>
+  </a>
 </p>
 
 This repository contains the data structures required to interact with LTA's datamall APIs. All data structures implements `Serialize` and `Deserialize`.
@@ -23,8 +26,18 @@ This repository contains the data structures required to interact with LTA's dat
 ## `Cargo.toml` setup
 ```toml
 # extra features available: fastfloat
-lta-models = { version = "0.5.0" }
+lta-models = { version = "0.6.0" }
 ```
+
+## Supported formats
+
+| Format      | Supported? | Tested? |
+| ----------- | ---------- | ------- |
+| JSON        | ✅          | ✅       |
+| Bincode     | ✅          | ✅       |
+| Flexbuffer  | ✅          | ✅       |
+| MessagePack | ✅          | ✅       |
+
 
 ## Performance & `fast-float` implementation
 Some of the deserialization code _may_ benefit from using the `fastfloat` feature, but during testing the biggest performance improvement can be seen when you swap out the system allocator to something faster like [`mimalloc`](https://github.com/microsoft/mimalloc) or [`jemalloc`](https://github.com/jemalloc/jemalloc)

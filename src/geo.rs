@@ -5,6 +5,8 @@ pub mod prelude {
 }
 
 pub mod geospatial_whole_island {
+    use std::default;
+
     use serde::{Deserialize, Serialize};
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -13,12 +15,12 @@ pub mod geospatial_whole_island {
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-    #[serde(rename_all(deserialize = "PascalCase"))]
+    #[serde(rename_all = "PascalCase")]
     pub struct GeospatialLink {
         pub link: String,
     }
 
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum GeospatialLayerId {
         ArrowMarking,
         Bollard,
@@ -59,6 +61,10 @@ pub mod geospatial_whole_island {
         #[serde(alias = "VehicularBridge_Flyover_Underpass")]
         VehicularBridgeOrFlyoverOrUnderpass,
         WordMarking,
+
+        #[default]
+        #[serde(other)]
+        Unknown
     }
 
     impl From<GeospatialWholeIslandRawResp> for Vec<String> {

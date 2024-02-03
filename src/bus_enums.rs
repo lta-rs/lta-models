@@ -1,6 +1,10 @@
 //! Enums for buses and operators
 //! Used for transforming stringly typed data from API to enums
 
+pub mod prelude {
+    pub use crate::bus_enums::{BusCategory, BusFeature, BusLoad, BusType, Operator};
+}
+
 use serde::{Deserialize, Serialize};
 
 /// SBST -> SBS Transit
@@ -10,15 +14,21 @@ use serde::{Deserialize, Serialize};
 /// TTS -> Tower Transit Singapore
 ///
 /// GAS -> Go Ahead Singapore
-#[allow(clippy::upper_case_acronyms)]
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
-#[serde(rename_all(deserialize = "PascalCase"))]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize, Default)]
 pub enum Operator {
-    SBST,
-    SMRT,
-    TTS,
-    GAS,
+    #[serde(rename = "SBST")]
+    Sbst,
 
+    #[serde(rename = "SMRT")]
+    Smrt,
+
+    #[serde(rename = "TTS")]
+    Tts,
+
+    #[serde(rename = "GAS")]
+    Gas,
+
+    #[default]
     #[serde(other)]
     Unknown,
 }
@@ -28,19 +38,19 @@ pub enum Operator {
 /// DD -> Double Decker
 ///
 /// BD -> Bendy
-#[allow(clippy::upper_case_acronyms)]
-#[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize)]
-#[serde(rename_all(deserialize = "PascalCase"))]
+#[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize, Default)]
+#[serde(rename_all = "PascalCase")]
 pub enum BusType {
-    #[serde(alias = "SD")]
+    #[serde(rename = "SD")]
     SingleDecker,
 
-    #[serde(alias = "DD")]
+    #[serde(rename = "DD")]
     DoubleDecker,
 
-    #[serde(alias = "BD")]
+    #[serde(rename = "BD")]
     Bendy,
 
+    #[default]
     #[serde(other)]
     Unknown,
 }
@@ -50,33 +60,35 @@ pub enum BusType {
 /// SDA -> Standing available
 ///
 /// LSD -> Limited standing
-#[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize)]
-#[serde(rename_all(deserialize = "PascalCase"))]
+#[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize, Default)]
 pub enum BusLoad {
-    #[serde(alias = "SEA")]
+    #[serde(rename = "SEA")]
     SeatsAvailable,
 
-    #[serde(alias = "SDA")]
+    #[serde(rename = "SDA")]
     StandingAvailable,
 
-    #[serde(alias = "LSD")]
+    #[serde(rename = "LSD")]
     LimitedStanding,
 
+    #[default]
     #[serde(other)]
     Unknown,
 }
 
-#[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize)]
-#[serde(rename_all(deserialize = "PascalCase"))]
+
+#[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize, Default)]
 pub enum BusFeature {
-    #[serde(alias = "WAB")]
+    #[serde(rename = "WAB")]
     WheelChairAccessible,
 
+    #[default]
     #[serde(other)]
     Unknown,
 }
 
-#[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize)]
+
+#[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize, Default)]
 pub enum BusCategory {
     #[serde(alias = "EXPRESS")]
     Express,
@@ -108,6 +120,7 @@ pub enum BusCategory {
     #[serde(alias = "FLAT FARE $2.00")]
     FlatFareTwoDollar,
 
+    #[default]
     #[serde(other)]
     Unknown,
 }

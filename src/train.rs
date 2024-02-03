@@ -14,14 +14,14 @@ pub mod prelude {
 /// Some of the stations are commented out to prevent misuse as they are technically
 /// not constructed yet or it has not been announced
 #[allow(clippy::upper_case_acronyms)]
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
 pub enum StationCode {
     NS1,
     NS2,
     NS3,
     NS4,
     NS5,
-    // NS6,
+    NS6,
     NS7,
     NS8,
     NS9,
@@ -126,7 +126,7 @@ pub enum StationCode {
     CC27,
     CC28,
     CC29,
-    CC30, //  keppel
+    CC30, //  koppel
     CC31, //  cantonment
     CC32, //  prince edward road
     CC33,
@@ -245,6 +245,8 @@ pub enum StationCode {
     PW5,
     PW6,
     PW7,
+
+    #[default]
     #[serde(other)]
     Unknown,
 }
@@ -257,11 +259,8 @@ pub mod train_service_alert {
     use std::ops::Deref;
     use std::str::FromStr;
 
-    #[deprecated(since = "0.5", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/TrainServiceAlerts";
-
     #[allow(clippy::upper_case_acronyms)]
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum MrtLine {
         CCL,
         CEL,
@@ -276,16 +275,18 @@ pub mod train_service_alert {
         SWL,
         BPL,
 
+        #[default]
         #[serde(other)]
         Unknown,
     }
 
-    #[derive(Debug, Clone, PartialEq, Serialize_repr, Deserialize_repr)]
+    #[derive(Debug, Clone, PartialEq, Serialize_repr, Deserialize_repr, Default)]
     #[repr(u32)]
     pub enum TrainStatus {
         Normal = 1,
         Disrupted = 2,
 
+        #[default]
         #[serde(other)]
         Unknown,
     }
@@ -316,7 +317,7 @@ pub mod train_service_alert {
     pub struct StringWrap(String);
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-    #[serde(rename_all(deserialize = "PascalCase"))]
+    #[serde(rename_all = "PascalCase")]
     pub struct AffectedSegment {
         pub line: MrtLine,
 
@@ -334,14 +335,14 @@ pub mod train_service_alert {
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-    #[serde(rename_all(deserialize = "PascalCase"))]
+    #[serde(rename_all = "PascalCase")]
     pub struct TrainServiceAlertMessage {
         pub content: String,
         pub created_date: String,
     }
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-    #[serde(rename_all(deserialize = "PascalCase"))]
+    #[serde(rename_all = "PascalCase")]
     pub struct TrainServiceAlert {
         pub status: TrainStatus,
 
