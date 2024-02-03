@@ -15,6 +15,9 @@
   <a href="https://crates.io/crates/lta_models">
     <img src="https://img.shields.io/crates/v/lta-models"/>
   </a>
+  <a href="https://crates.io/crates/lta_models">
+    <img src="https://img.shields.io/badge/forbid_unsafe-yes-blue"/>
+  </a>
 </p>
 
 This repository contains the data structures required to interact with LTA's datamall APIs. All data structures implements `Serialize` and `Deserialize`.
