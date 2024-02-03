@@ -19,9 +19,6 @@ pub mod bus_arrival {
     #[cfg(feature = "fastfloat")]
     use crate::utils::de::from_str_fast_float;
 
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2";
-
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     #[serde(rename_all = "PascalCase")]
     pub struct RawArrivalBusService {
@@ -161,9 +158,6 @@ pub mod bus_services {
     use crate::utils::de::from_str_error_as_none;
     use crate::utils::regex::BUS_FREQ_RE;
     use serde::{Deserialize, Deserializer, Serialize};
-
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BusServices";
 
     /// Both min and max are in terms of minutes
     #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -307,9 +301,6 @@ pub mod bus_routes {
     use crate::utils::de::from_str;
     use crate::utils::serde_date::str_time_option::{de_str_time_opt_br, ser_str_time_opt};
 
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BusRoutes";
-
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     #[serde(rename_all = "PascalCase")]
     pub struct BusRouteRaw {
@@ -422,9 +413,6 @@ pub mod bus_stops {
     use serde::{Deserialize, Serialize};
 
     use crate::utils::de::from_str;
-
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BusStops";
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     #[serde(rename_all = "PascalCase")]

@@ -14,7 +14,7 @@ use serde::{Deserialize, Serialize};
 /// TTS -> Tower Transit Singapore
 ///
 /// GAS -> Go Ahead Singapore
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize, Default)]
 pub enum Operator {
     #[serde(rename = "SBST")]
     Sbst,
@@ -28,6 +28,7 @@ pub enum Operator {
     #[serde(rename = "GAS")]
     Gas,
 
+    #[default]
     #[serde(other)]
     Unknown,
 }

@@ -16,15 +16,7 @@ pub mod crowd_density {
         OffsetDateTime,
     };
 
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL_CROWD_DENSITY_RT: &str =
-        "http://datamall2.mytransport.sg/ltaodataservice/PCDRealTime";
-
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL_CROWD_FORECAST: &str =
-        "http://datamall2.mytransport.sg/ltaodataservice/PCDForecast";
-
-    #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+    #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
     pub enum CrowdLevel {
         #[serde(rename = "l")]
         Low,
@@ -35,6 +27,7 @@ pub mod crowd_density {
         #[serde(rename = "m")]
         Moderate,
 
+        #[default]
         #[serde(other)]
         Na,
     }
@@ -142,22 +135,9 @@ pub mod crowd_density {
 pub mod passenger_vol {
     use serde::{Deserialize, Serialize};
 
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL_BY_BUS_STOPS: &str = "http://datamall2.mytransport.sg/ltaodataservice/PV/Bus";
-
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL_BY_OD_BUS_STOPS: &str =
-        "http://datamall2.mytransport.sg/ltaodataservice/PV/ODBus";
-
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL_BY_TRAIN: &str = "http://datamall2.mytransport.sg/ltaodataservice/PV/Train";
-
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL_BY_OD_TRAIN: &str = "http://datamall2.mytransport.sg/ltaodataservice/PV/ODTrain";
-
     pub const FORMAT: &str = "%Y%m";
 
-    #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+    #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
     pub enum VolType {
         /// Returns tap in and tap out passenger volume by weekdays and
         /// weekends for individual bus stop
@@ -175,6 +155,7 @@ pub mod passenger_vol {
         /// weekends for individual train station
         OdTrain,
 
+        #[default]
         #[serde(other)]
         Unknown,
     }

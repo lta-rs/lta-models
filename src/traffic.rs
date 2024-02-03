@@ -37,10 +37,7 @@ pub mod erp_rates {
         },
     };
 
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/ERPRates";
-
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum VehicleType {
         #[serde(alias = "Passenger Cars")]
         PassengerCars,
@@ -63,6 +60,7 @@ pub mod erp_rates {
         #[serde(alias = "Big Buses")]
         BigBuses,
 
+        #[default]
         #[serde(other)]
         Unknown,
     }
@@ -95,14 +93,18 @@ pub mod erp_rates {
         }
     }
 
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum DayType {
         Weekdays,
         Saturday,
+
+        #[default]
+        #[serde(other)]
+        Unknown
     }
 
     #[allow(clippy::upper_case_acronyms)]
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum ZoneId {
         CT2,
         PE4,
@@ -138,6 +140,7 @@ pub mod erp_rates {
         MC1,
         MC2,
 
+        #[default]
         #[serde(other)]
         Unknown,
     }
@@ -222,25 +225,25 @@ pub mod carpark_avail {
     use crate::utils::de::from_str_to_coords;
     use crate::utils::Coordinates;
 
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/CarParkAvailabilityv2";
-
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum LotType {
         C,
         L,
         Y,
         H,
+
+        #[default]
         #[serde(other)]
         Unknown,
     }
 
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     #[allow(clippy::upper_case_acronyms)]
     pub enum Agency {
         HDB,
         URA,
         LTA,
+        #[default]
         #[serde(other)]
         Unknown,
     }
@@ -309,11 +312,8 @@ pub mod est_travel_time {
     use serde::{Deserialize, Serialize};
     use serde_repr::*;
 
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/EstTravelTimes";
-
     #[allow(clippy::upper_case_acronyms)]
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum Highway {
         PIE,
         AYE,
@@ -326,15 +326,18 @@ pub mod est_travel_time {
         BKE,
         KJE,
         MCE,
+
+        #[default]
         #[serde(other)]
         Unknown,
     }
 
-    #[derive(Debug, Clone, PartialEq, Serialize_repr, Deserialize_repr)]
+    #[derive(Debug, Clone, PartialEq, Serialize_repr, Deserialize_repr, Default)]
     #[repr(u32)]
     pub enum HighwayDirection {
         EastToWest = 1,
         WestToEast = 2,
+        #[default]
         #[serde(other)]
         Unknown,
     }
@@ -400,13 +403,11 @@ pub mod faulty_traffic_lights {
 
     use crate::utils::serde_date::ymd_hms_option;
 
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/FaultyTrafficLights";
-
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum TechnicalAlarmType {
         Blackout = 4,
         FlashingYellow = 13,
+        #[default]
         #[serde(other)]
         Unknown,
     }
@@ -450,17 +451,11 @@ pub mod road {
 
     use crate::utils::serde_date::str_date;
 
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL_ROAD_OPENING: &str =
-        "http://datamall2.mytransport.sg/ltaodataservice/RoadOpenings";
-
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL_ROAD_WORKS: &str = "http://datamall2.mytransport.sg/ltaodataservice/RoadWorks";
-
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum RoadDetailsType {
         RoadOpening,
         RoadWorks,
+        #[default]
         #[serde(other)]
         Unknown,
     }
@@ -501,9 +496,6 @@ pub mod traffic_images {
     use serde::{Deserialize, Serialize};
 
     use crate::utils::de::from_str;
-
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/Traffic-Imagesv2";
 
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct TrafficImageRaw {
@@ -555,10 +547,7 @@ pub mod traffic_images {
 pub mod traffic_incidents {
     use serde::{Deserialize, Serialize};
 
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/TrafficIncidents";
-
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum IncidentType {
         Accident,
 
@@ -588,6 +577,7 @@ pub mod traffic_incidents {
 
         Roadwork,
 
+        #[default]
         #[serde(other)]
         Unknown,
     }
@@ -627,10 +617,7 @@ pub mod traffic_speed_bands {
     #[cfg(feature = "fastfloat")]
     use crate::utils::de::from_str_fast_float;
 
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/TrafficSpeedBandsv2";
-
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum RoadCategory {
         #[serde(alias = "A")]
         Expressway,
@@ -653,6 +640,7 @@ pub mod traffic_speed_bands {
         #[serde(alias = "G")]
         NoCategoryInfoAvail,
 
+        #[default]
         #[serde(other)]
         Unknown,
     }
@@ -739,9 +727,6 @@ pub mod traffic_speed_bands {
 pub mod vms_emas {
     use serde::{Deserialize, Serialize};
 
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/VMS";
-
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct Vms {
         #[serde(alias = "EquipmentID")]
@@ -774,10 +759,7 @@ pub mod bike_parking {
 
     use crate::utils::de::from_str_to_bool;
 
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/BicycleParkingv2";
-
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum RackType {
         #[serde(alias = "Yellow Box")]
         YellowBox,
@@ -818,6 +800,7 @@ pub mod bike_parking {
         #[serde(alias = "Racks_NEA")]
         RacksNEA,
 
+        #[default]
         #[serde(other)]
         Unknown,
     }

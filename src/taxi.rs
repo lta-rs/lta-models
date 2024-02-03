@@ -14,9 +14,6 @@ pub mod taxi_avail {
     use crate::utils::Coordinates;
     use serde::{Deserialize, Serialize};
 
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/Taxi-Availability";
-
     #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
     pub struct InternalCoordinates {
         /// Original data already float
@@ -53,10 +50,7 @@ pub mod taxi_stands {
     use crate::utils::de::from_str_to_bool;
     use serde::{Deserialize, Serialize};
 
-    #[deprecated(since = "0.5.0", note = "Will be removed in future versions")]
-    pub const URL: &str = "http://datamall2.mytransport.sg/ltaodataservice/TaxiStands";
-
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum TaxiStandOwner {
         #[serde(rename = "LTA")]
         Lta,
@@ -66,11 +60,12 @@ pub mod taxi_stands {
 
         Private,
 
+        #[default]
         #[serde(other)]
         Unknown,
     }
 
-    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+    #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
     pub enum TaxiStandType {
         /// Allow taxis to queue in the taxi bays and wait for passengers
         Stand,
@@ -78,6 +73,7 @@ pub mod taxi_stands {
         /// Allow taxis to perform immediate pick up and drop off of passengers
         Stop,
 
+        #[default]
         #[serde(other)]
         Unknown,
     }
